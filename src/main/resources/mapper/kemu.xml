@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundata.edu.dao.Kemu">
+
+    <select id="querySelect" resultType="java.util.HashMap">
+        select * from ${tableName} where
+        <foreach collection="map" item="value" index="key" separator="and">
+            ${key}='${value}'
+        </foreach>
+    </select>
+
+</mapper>

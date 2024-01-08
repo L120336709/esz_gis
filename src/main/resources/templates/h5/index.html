@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <link rel="stylesheet" href="/h5/css/zhongygw.css?v=202203215"/>
+    <title>首页</title>
+</head>
+<body>
+<div id="div0" style="margin:0 auto;text-align:center;background-color: white;font-size: 15px;height: 100%">
+    <div style="height: 85%">
+    <div style="font-weight:bold;font-size: 20px;padding: 20px 0">全州教育人事简要信息检索</div>
+
+    <div style="padding: 0 0 10px 0">
+        <input placeholder="请输入单位/学校或人员姓名关键字" id="gjz" style="width: 70%" onkeydown="keyup_submit(event)">
+        <button class="btn btn-primary" onclick="getList()">搜索</button>
+    </div>
+
+    <div id="chushi" style="height: 60%">
+        <div style="padding: 100px 0 0 0;">欢迎使用全州教育系统主要岗位人员信息管理系统！</div>
+        <div style="padding:  0 0 200px 0 ;">请输入单位/学校或人员姓名关键字进行查询！</div>
+    </div>
+
+    <div id="message" hidden  >
+        <div id="message01" style="padding: 0px 0 0 20px;text-align:left;float: left">
+            <div class="words" id="uname1" style="font-weight: bold">姓名：<a id="uname"></a></div>
+            <div class="words" id="uname4">职务：<a id="zhiwu"></a></div>
+            <div class="words" id="uname2">单位：<a id="org"></a></div>
+            <div class="words" id="uname3">出生年月：<a id="year"></a></div>
+            <div>
+                <div class="words" id="uname71" style="float: left">性别：<a id="xingbie" style="padding: 0 10px"></a>
+                </div>
+                <div class="words" id="uname72">民族：<a id="minzu" style="padding: 0 10px"></a></div>
+            </div>
+            <div class="words" id="uname5">联系电话：<a id="phone"></a></div>
+            <div class="words" id="uname6">单位联系电话：<a id="orgphne"></a></div>
+        </div>
+        <div id="message02">
+            <img id="img" class="pic" src="/img/u6.png" style="width: 100px;height: 150px">
+        </div>
+
+    </div>
+
+    <div id="danweixx" hidden style="text-align:left;padding: 0 0 0 20px;height: 15%">
+        <div class="words" id="danwei01" style="font-weight:bold">单位：<a id="danwei"></a></div>
+        <div class="words" id="danwei02">单位联系电话：<a id="dwdh"></a></div>
+        <div class="words" id="danwei03">地址：<a id="dz"></a></div>
+    </div>
+    <div id="treediv" style="padding: 10px 5%;height: 40%" hidden>
+        <div id="treemenu" style="text-align:left;overflow: scroll;overflow-x: hidden; height: 100%;border:1px solid #000;">
+        </div>
+    </div>
+    <div style="padding: 10px 20px;height: 40%;font-size: 12px;" id="table0" align="center" hidden>
+        <div id="titlesdiv" style="padding: 0 0 10px 0;
+        color: #0066cc;font-size: 15px;" hidden>
+            <a id="titles"></a></div>
+        <div style="height: 85%;overflow: scroll;overflow-x: hidden;">
+            <table id="xgry" class="pure-table" style="width: 100%;" >
+            </table>
+        </div>
+
+    </div>
+
+    <div id="outerdiv"
+         style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;"/>
+    <div id="innerdiv" style="position:absolute;">
+        <img id="bigimg" style="border:5px solid #fff;" src=""/>
+    </div>
+    </div>
+
+</div>
+<div >
+    <button class="btn btn-primary" id="bto01" onclick="getJiGou()">机构列表</button>
+    <button class="btn btn-primary" onclick="close()">返回主页</button>
+</div>
+<div style="color: #0066cc; padding: 0 5px">
+    <div style="text-align:center;padding: 5px 0;">
+        <img src="/img/dshj.png" style="width: 60%;">
+    </div>
+    <div style="font-size: 10px;text-align:center;">备案信息：鄂ICP备2020019434号-1</div>
+</div>
+
+<script src="/js/mmlib.min.js"></script>
+<script src="/js/common.js"></script>
+<script src="/h5/js/zhongygw.js?v=202203215"></script>
+</body>
+
+</html>

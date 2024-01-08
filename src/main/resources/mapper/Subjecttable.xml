@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundata.edu.dao.SubjecttableDao">
+    
+    <resultMap type="com.sundata.edu.domain.Subjecttable" id="BaseResultMap">
+        <result property="subjectid" column="subjectid" />
+        <result property="subjectname" column="subjectname" />
+        <result property="phasestudy" column="phasestudy" />
+        <result property="phasestudyid" column="phasestudyid" />
+        <result property="subjecttotal" column="subjecttotal" />
+    </resultMap>
+
+    <sql id="selectSubjecttable">
+        select subjectid, subjectname, phasestudy,phasestudyid,subjecttotal from subjecttable
+    </sql>
+
+    <select id="selectSubjecttable" parameterType="com.sundata.edu.domain.Subjecttable" resultMap="BaseResultMap">
+        <include refid="selectSubjecttable"/>
+        <where>
+            <if test="subjectid != null  and subjectid != ''"> and subjectid = #{subjectid}</if>
+            <if test="subjectname != null  and subjectname != ''"> and subjectname = #{subjectname}</if>
+            <if test="phasestudy != null  and phasestudy != ''"> and phasestudy = #{phasestudy}</if>
+            <if test="phasestudyid != null  and phasestudyid != ''"> and phasestudyid = #{phasestudyid}</if>
+            <if test="subjecttotal != null  and subjecttotal != ''"> and subjecttotal = #{subjecttotal}</if>
+        </where>
+        order by subjectid
+    </select>
+
+</mapper>
