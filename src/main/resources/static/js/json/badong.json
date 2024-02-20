@@ -6970,7 +6970,11 @@
         "name": "茶店子镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          110.36,
+          30.92
+        ]
       }
     },
     {
@@ -11182,7 +11186,11 @@
         "name": "大支坪镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          110.13690339,
+          30.62
+        ]
       }
     },
     {
@@ -23118,7 +23126,11 @@
         "name": "官渡口镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          110.22,
+          31.08
+        ]
       }
     },
     {
@@ -63098,7 +63110,11 @@
         "name": "野三关镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          110.34,
+          30.66
+        ]
       }
     }
   ]

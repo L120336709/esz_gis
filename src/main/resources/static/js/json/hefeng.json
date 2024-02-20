@@ -8970,7 +8970,11 @@
         "name": "铁炉乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          110.53,
+          29.74
+        ]
       }
     },
     {
@@ -10706,7 +10710,11 @@
         "name": "邬阳乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          110.15,
+          30.15
+        ]
       }
     },
     {
@@ -14858,7 +14866,11 @@
         "name": "五里乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          110.30,
+          29.88
+        ]
       }
     },
     {
@@ -16470,7 +16482,11 @@
         "name": "下坪乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          110.13,
+         30.05
+        ]
       }
     },
     {
@@ -19555,10 +19571,14 @@
         ]
       },
       "properties": {
-        "name": "燕子乡",
+        "name": "燕子镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          110.21,
+          29.97
+        ]
       }
     },
     {
@@ -21755,7 +21775,7 @@
         ]
       },
       "properties": {
-        "name": "中营乡",
+        "name": "中营镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
         "stroke": "#ff0000"

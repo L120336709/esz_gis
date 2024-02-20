@@ -1626,7 +1626,11 @@
         "name": "大路坝区",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          108.74,
+          29.67831061
+        ]
       }
     },
     {
@@ -2259,7 +2263,7 @@
         ]
       },
       "properties": {
-        "name": "丁寨乡",
+        "name": "曲江镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
         "stroke": "#ff0000"
@@ -5791,10 +5795,14 @@
         ]
       },
       "properties": {
-        "name": "尖山乡",
+        "name": "唐崖镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          108.94,
+          29.70
+        ]
       }
     },
     {
@@ -8350,7 +8358,11 @@
         "name": "小村乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          108.92,
+          29.92
+        ]
       }
     },
     {
@@ -9066,7 +9078,11 @@
         "name": "忠堡镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.23,
+          29.65
+        ]
       }
     }
   ]

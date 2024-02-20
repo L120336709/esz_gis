@@ -10795,10 +10795,14 @@
         ]
       },
       "properties": {
-        "name": "长梁乡",
+        "name": "长梁镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.76,
+          30.73
+        ]
       }
     }
   ]

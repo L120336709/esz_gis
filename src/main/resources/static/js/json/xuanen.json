@@ -926,7 +926,11 @@
         "name": "椿木营乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.81,
+          30.02
+        ]
       }
     },
     {
@@ -2151,10 +2155,14 @@
         ]
       },
       "properties": {
-        "name": "高罗乡",
+        "name": "高罗镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.46,
+          29.75
+        ]
       }
     },
     {
@@ -3506,7 +3514,11 @@
         "name": "椒园镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.38893239,
+        30.02
+        ]
       }
     },
     {
@@ -5231,10 +5243,14 @@
         ]
       },
       "properties": {
-        "name": "李家河乡",
+        "name": "李家河镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.425,
+          29.625
+        ]
       }
     },
     {
@@ -7062,7 +7078,11 @@
         "name": "沙道沟镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.65,
+          29.72
+        ]
       }
     },
     {
@@ -8102,7 +8122,11 @@
         "name": "万寨乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.55394439,
+          30.13
+        ]
       }
     },
     {
@@ -10414,7 +10438,11 @@
         "name": "长潭河侗族乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.65,
+          29.95
+        ]
       }
     },
     {
@@ -11754,7 +11782,11 @@
         "name": "珠山镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.51732939,
+          29.975
+        ]
       }
     }
   ]

@@ -2851,7 +2851,7 @@
         ]
       },
       "properties": {
-        "name": "革勒车乡",
+        "name": "革勒车镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
         "stroke": "#ff0000"
@@ -3630,7 +3630,11 @@
         "name": "旧司镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.25,
+          29.48
+        ]
       }
     },
     {
@@ -4742,7 +4746,11 @@
         "name": "绿水镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.31,
+          29.39
+        ]
       }
     },
     {
@@ -7510,7 +7518,11 @@
         "name": "翔凤镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.37,
+          29.50
+        ]
       }
     }
   ]

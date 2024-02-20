@@ -6,6 +6,7 @@ import com.sundata.edu.domain.Userinfo;
 import com.sundata.edu.framework.web.controller.BaseController;
 import com.sundata.edu.service.SchedulesService;
 import com.sundata.edu.session.RpcLoginService;
+import com.sundata.edu.util.PcUtils;
 import com.sundata.edu.vo.SchedulesVo;
 import com.sundata.sdcloud.sso.service.ITokenService;
 import com.sundata.sdcloud.user.service.IUserService;
@@ -83,8 +84,24 @@ public class H5IndexController extends BaseController{
     }
 
     @GetMapping(value = "/h5/echarts")
-    public ModelAndView echarts() {
+    public ModelAndView echarts(HttpServletRequest request) {
+        boolean isMoblie = PcUtils.JudgeIsMoblie(request);
+        if(isMoblie){
+            ModelAndView view = new ModelAndView( "/h5/echartsh5");
+            return view;
+        }
         ModelAndView view = new ModelAndView( "/h5/echarts");
+        return view;
+    }
+
+    @GetMapping(value = "/h5/phone2023")
+    public ModelAndView phone2023() {
+        ModelAndView view = new ModelAndView( "/h5/phone2023");
+        return view;
+    }
+    @GetMapping(value = "/h5/phone2024")
+    public ModelAndView phone2024() {
+        ModelAndView view = new ModelAndView( "/h5/phone2024");
         return view;
     }
 }

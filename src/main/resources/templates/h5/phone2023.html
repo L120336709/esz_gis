@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>签到精确定位</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <style>
+        html, body, #container {
+            height: 100%;
+        }
+
+        .info {
+            width: 20rem;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class="info">
+    <h4 id="status"></h4>
+    <hr>
+    <p id="result"></p>
+    <hr>
+    <!--    <p>由于众多浏览器已不再支持非安全域的定位请求，为保位成功率和精度，请升级您的站点到HTTPS。</p>-->
+</div>
+<!-- 配置安全密钥,自2021年12月02日升级，升级之后所申请的 key 必须配备安全密钥 jscode 一起使用 -->
+<script type="text/javascript">
+    window._AMapSecurityConfig = {
+        securityJsCode: '78f1f5dffb0c20ba935ab8b682f23b36',
+    }
+</script>
+<script src="/js/mmlib.min.js"></script>
+<script src="/js/common.js"></script>
+<script type="text/javascript" src="/js/ueditor/third-party/jquery-1.10.2.min.js"></script>
+<script src="https://api.map.baidu.com/api?type=webgl&v=1.0&ak=WjlYPwCY7SRsRamUnXA48WcHR29nAgT1"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=213011685f74f7c30aeaf9f834330f62"></script>
+<!--<script src="/js/meeting/meeting.js?v=202202176"></script>-->
+<script type="text/javascript">
+
+    //var map = new BMapGL.Map('container'); // 创建Map实例
+    //var point = new BMapGL.Point(116.331398,39.897445);
+    //map.centerAndZoom(point,10);
+    var geolocation = new BMapGL.Geolocation();
+    geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            //var mk = new BMapGL.Marker(r.point);
+            //map.addOverlay(mk);
+            //map.panTo(r.point);
+
+            // var str =[];
+            // str.push('定位结果：' + r.point);
+            // str.push('定位类别：' + r.location_type);
+            // if(r.accuracy){
+            //     str.push('精度：' + r.accuracy + ' 米');
+            // }//如为IP精确定位结果则没有精度信息
+            // str.push('是否经过偏移：' + (r.isConverted ? '是' : '否'));
+            // str.push('百度定位');
+            // document.getElementById('result').innerHTML = str.join('<br>');
+
+            //基本地图加载
+            var map = new AMap.Map('container', {
+                resizeEnable: true
+            });
+            AMap.plugin('AMap.Geolocation', function () {
+                var geolocation = new AMap.Geolocation({
+                    enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                    timeout: 10000,          //超过10秒后停止定位，默认：5s
+                    position: 'RB',    //定位按钮的停靠位置
+                    offset: [10, 20], //定位按钮与设置的停靠位置的偏移量，默认：[10, 20]
+                    zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+                });
+                map.addControl(geolocation);
+                //result中包含浏览器ip地址等信息
+                geolocation.getCurrentPosition(function (status, result) {
+                    if (status == 'complete') {
+                        onComplete(result, r.point.lng, r.point.lat)
+                    } else {
+                        onError(result)
+                    }
+                });
+            });
+            //alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+        } else {
+            alert('failed' + this.getStatus());
+        }
+    });
+
+    //解析定位结果
+    function onComplete(data, lng, lat) {
+        document.getElementById('status').innerHTML = '定位成功'
+        var pp = data.position.toString().split(",")
+        var j = pp[0]
+        var w = pp[1]
+        var str = [];
+        str.push('定位结果：' + data.position);
+        str.push('定位类别：' + data.location_type);
+        if (data.accuracy) {
+            str.push('精度：' + data.accuracy + ' 米');
+        }//如为IP精确定位结果则没有精度信息
+        str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+        document.getElementById('result').innerHTML = str.join('<br>');
+
+        layer.open({
+            type: 1,
+            title: "导航选择",
+            skin: "my-skin",
+            area: '300px',
+            content: "<div style='margin-left: 20px;padding: 10px 0'>请选择导航地图！<br>定位结果： " + data.position + "</div>",
+            btn: ['百度', '高德', '取消'],
+            btn1: function () {
+                //location.href="http://api.map.baidu.com/direction?origin=30.282406,109.486761&destination=30.382406,109.586761&mode=driving&region=恩施&output=html"
+                location.href = "http://api.map.baidu.com/marker?location=" + lat + "," + lng + "&title=定位地点&output=html"
+            }, btn2: function () {
+                location.href = "https://uri.amap.com/marker?position=" + j + "," + w + "&name=定位地点"
+            }, btn3: function (index) {
+                layer.close(index)
+            }
+        })
+
+        // $.ajax({
+        //     type: "get",
+        //     dataType: 'jsonp',
+        //     url: "http://api.map.baidu.com/ag/coord/convert?from=0&to=4&x="+lng+"&y="+lat,
+        //     success: function (result) {
+        //         if(result.error==0){
+        //             lng=base64Decode(result.x)
+        //             lat=base64Decode(result.y)
+        //             layer.open({
+        //                 type: 1,
+        //                 title: "导航选择",
+        //                 skin: "my-skin",
+        //                 area: '300px',
+        //                 content: "<div style='margin-left: 20px;padding: 10px 0'>请选择导航地图！<br>定位结果： "+ data.position+"</div>",
+        //                 btn: ['百度', '高德', '取消'],
+        //                 btn1: function () {
+        //                     //location.href="http://api.map.baidu.com/direction?origin=30.282406,109.486761&destination=30.382406,109.586761&mode=driving&region=恩施&output=html"
+        //                     location.href = "http://api.map.baidu.com/marker?location="+lat+","+lng+"&title=定位地点&output=html"
+        //                 }, btn2: function () {
+        //                     location.href = "https://uri.amap.com/marker?position="+j+","+w+"&name=定位地点"
+        //                 }, btn3: function (index) {
+        //                     layer.close(index)
+        //                 }
+        //             })
+        //         } else {
+        //             alert("百度接口获取经纬度偏移数据失败！")
+        //         }
+        //
+        //     }
+        // })
+
+
+    }
+
+    function base64Decode(encodedString) {
+        return atob(encodedString);
+    }
+
+    //解析定位错误信息
+    function onError(data) {
+        document.getElementById('status').innerHTML = '定位失败'
+        document.getElementById('result').innerHTML = '失败原因排查信息:' + data.message + '</br>浏览器返回信息：' + data.originMessage;
+    }
+
+</script>
+</body>
+</html>

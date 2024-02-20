@@ -2166,7 +2166,11 @@
         "name": "建南镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp": [
+          108.53,
+          30.40
+        ]
       }
     },
     {
@@ -4706,7 +4710,11 @@
         "name": "东城街道",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.01,
+          30.32
+        ]
       }
     },
     {
@@ -6450,7 +6458,11 @@
         "name": "凉雾乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          108.849,
+          30.31
+        ]
       }
     },
     {
@@ -9342,7 +9354,11 @@
         "name": "南坪乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp": [
+          108.79,
+          30.37
+        ]
       }
     },
     {
@@ -10014,7 +10030,11 @@
         "name": "沙溪乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          108.79,
+          29.94
+        ]
       }
     },
     {
@@ -10802,7 +10822,11 @@
         "name": "团堡镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.17,
+          30.31
+        ]
       }
     },
     {
@@ -11934,7 +11958,11 @@
         "name": "汪营镇",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          108.69,
+          30.27
+        ]
       }
     },
     {
@@ -15266,7 +15294,11 @@
         "name": "文斗乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          108.62,
+          29.93
+        ]
       }
     },
     {
@@ -15814,7 +15846,11 @@
         "name": "元堡乡",
         "fill-opacity": 0,
         "stroke-opacity": 1,
-        "stroke": "#ff0000"
+        "stroke": "#ff0000",
+        "cp":[
+          109.02,
+          30.19
+        ]
       }
     },
     {

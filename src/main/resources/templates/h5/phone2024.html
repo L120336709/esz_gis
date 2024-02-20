@@ -1,0 +1,375 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>签到精确定位</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <style>
+        html, body, #container {
+            height: 100%;
+        }
+
+        .info {
+            width: 20rem;
+        }
+
+
+        .content-window-card {
+            position: relative;
+            box-shadow: none;
+            bottom: 0;
+            left: 0;
+            width: auto;
+            padding: 0;
+        }
+
+        .content-window-card p {
+            height: 2rem;
+        }
+
+        .custom-info {
+            border: solid 1px silver;
+        }
+
+        div.info-top {
+            position: relative;
+            background: none repeat scroll 0 0 #F9F9F9;
+            border-bottom: 1px solid #CCC;
+            border-radius: 5px 5px 0 0;
+        }
+
+        div.info-top div {
+            display: inline-block;
+            color: #333333;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 31px;
+            padding: 0 10px;
+        }
+
+        div.info-top img {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition-duration: 0.25s;
+        }
+
+        div.info-top img:hover {
+            box-shadow: 0px 0px 5px #000;
+        }
+
+        div.info-middle {
+            font-size: 12px;
+            padding: 10px 6px;
+            line-height: 20px;
+        }
+
+        div.info-bottom {
+            height: 0px;
+            width: 100%;
+            clear: both;
+            text-align: center;
+        }
+
+        div.info-bottom img {
+            position: relative;
+            z-index: 104;
+        }
+
+        span {
+            margin-left: 5px;
+            font-size: 11px;
+        }
+
+        .info-middle img {
+            float: left;
+            margin-right: 6px;
+        }
+
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent; /* 左边透明 */
+            border-right: 5px solid transparent; /* 右边透明 */
+            border-top: 10px solid black; /* 上边为黑色线条 */
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class="info">
+    <h4 id="status"></h4>
+    <hr>
+    <p id="result"></p>
+    <hr>
+
+    <button type="button" id="fuzhi" style="background-color: #32A026;color: white;padding: 5px">复制学校名称及经纬度信息</button>
+    <!--    <p>由于众多浏览器已不再支持非安全域的定位请求，为保位成功率和精度，请升级您的站点到HTTPS。</p>-->
+</div>
+<!-- 配置安全密钥,自2021年12月02日升级，升级之后所申请的 key 必须配备安全密钥 jscode 一起使用 -->
+<script type="text/javascript">
+    window._AMapSecurityConfig = {
+        securityJsCode: '78f1f5dffb0c20ba935ab8b682f23b36',
+    }
+</script>
+<script src="/js/mmlib.min.js"></script>
+<script src="/js/common.js"></script>
+<script type="text/javascript" src="/js/ueditor/third-party/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=213011685f74f7c30aeaf9f834330f62&plugin=AMap.Geocoder"></script>
+<script type="text/javascript">
+
+
+    document.getElementById("fuzhi").addEventListener('touchend', touch, false);
+    function touch(event){
+        var node = document.createElement('textarea');
+        if(document.getElementById("mc").value==""){
+            layer.open({
+                type: 1,
+                title: "导航选择",
+                skin: "my-skin",
+                area: '300px',
+                content: "<div >未输入学校名称</div>",
+                btn: ['关闭'],
+                btn1: function (index) {
+                    layer.close(index)
+                }
+            });
+
+            return
+        }
+        node.value = document.getElementById("mc").value+"："+document.getElementById("j").innerHTML+","+document.getElementById("w").innerHTML;
+        node.setAttribute('readOnly','readOnly');
+        node.setAttribute('style',"position: fixed; left: 0; top: 0;opacity: 0;");
+        document.getElementsByTagName('body')[0].appendChild(node);
+        setTimeout(function() {
+            node.focus();
+            node.setSelectionRange(0, node.value.length);
+            try{
+                document.execCommand('copy', true);
+                alert("复制成功！");
+            } catch(e) {
+                alert("复制失败！");
+            }
+            node.parentNode.removeChild(node);
+        }, 0);
+    }
+
+    //基本地图加载
+    var map = new AMap.Map('container', {
+        center: [109.493731, 30.308272],
+        zoom: 13,
+        resizeEnable: true
+    });
+
+
+    AMap.plugin('AMap.Geolocation', function () {
+        var geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：5s
+            position: 'RB',    //定位按钮的停靠位置
+            offset: [10, 20], //定位按钮与设置的停靠位置的偏移量，默认：[10, 20]
+            zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+        });
+        map.addControl(geolocation);
+        //result中包含浏览器ip地址等信息
+        geolocation.getCurrentPosition(function (status, result) {
+            if (status == 'complete') {
+                onComplete(result)
+            } else {
+                onError(result)
+            }
+        });
+    });
+
+    map.on('click', showInfoClick)
+    var marker = null
+    function showInfoClick(e) {    //给地图添加点击事件
+        console.log(e)
+        if (marker != null) {
+            marker.setMap(null);
+        }
+        marker = new AMap.Marker({
+            //icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+            position: [e.lnglat.getLng(), e.lnglat.getLat()],
+            offset: new AMap.Pixel(0, 0)
+        });
+
+
+        marker.setMap(map);
+
+
+        // map.clearOverlays();
+        // var lng = e.point.lng;
+        // var lat = e.point.lat;
+        // //创建标注位置
+        var lnglat  =[e.lnglat.getLng(), e.lnglat.getLat()]
+        var lnglats  =[e.lnglat.getLng() , e.lnglat.getLat()]
+
+        //鼠标点击marker弹出自定义的信息窗体
+        // map.event.addListener(marker, 'click', function () {
+        //     infoWindow.open(map, lnglats);
+        // });
+
+        var geocoder = new AMap.Geocoder();
+        //map.add(marker);
+        marker.setPosition(lnglat);
+        geocoder.getAddress(lnglat, function(status, result) {
+            if (status === 'complete'&&result.regeocode) {
+                console.log(result.regeocode.formattedAddress);
+                openInfo(lnglats,lnglat,result.regeocode.formattedAddress)
+
+
+
+
+
+
+                // document.getElementById('hiddenProvince').value = result.regeocode.addressComponent.province;
+                // document.getElementById('hiddenArea').value = result.regeocode.addressComponent.city;
+                // document.getElementById('hiddenCounty').value = result.regeocode.addressComponent.district;
+                // document.getElementById('address').value = result.regeocode.formattedAddress;
+            }else{
+                log.error('根据经纬度查询地址失败')
+            }
+        });
+    }
+
+    var infoWindow;
+    function openInfo(lnglats,lnglat,formattedAddress) {
+        if(infoWindow!=null){
+            infoWindow.close();
+        }
+
+        //构建信息窗体中显示的内容
+        var info = [];
+        // info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>学校信息</b><br>");
+        info.push("学校名称 : 获取学校名称<br>");
+        info.push("学校简称 : <input /><br>");
+        info.push("所属乡镇 : <select style='width: 150px'><option>建南镇</option></select><br>");
+        info.push("联系电话 : <input /><br>");
+        info.push("地址 :"+formattedAddress);
+        info.push("<br><button style='background-color: #00B4AA;border-radius: 5px;color: white;border:none;margin: 5px 0' onclick='daohang(\""+lnglat+"\")'>高德导航</button>");
+        info.push("</div>");
+        infoWindow = new AMap.InfoWindow({
+            isCustom:true,
+             //content: info.join("")  //使用默认信息窗体框样式，显示信息内容
+            content: createInfoWindow("录入学校信息", info.join(""))
+        });
+
+        infoWindow.open(map, lnglats);
+
+    }
+
+
+    //构建自定义信息窗体
+    function createInfoWindow(title, content) {
+        var info = document.createElement("div");
+        info.className = "custom-info input-card content-window-card";
+
+        //可以通过下面的方式修改自定义窗体的宽高
+        info.style.width = "250px";
+        // 定义顶部标题
+        var top = document.createElement("div");
+        var titleD = document.createElement("div");
+        var closeX = document.createElement("img");
+        top.className = "info-top";
+        titleD.innerHTML = title;
+        closeX.src = "https://webapi.amap.com/images/close2.gif";
+        closeX.onclick = closeInfoWindow;
+
+        top.appendChild(titleD);
+        top.appendChild(closeX);
+        info.appendChild(top);
+
+        // 定义中部内容
+        var middle = document.createElement("div");
+        middle.className = "info-middle";
+        middle.style.backgroundColor = 'white';
+
+        middle.innerHTML = content;
+
+        info.appendChild(middle);
+
+        // 定义底部内容
+        var bottom = document.createElement("div");
+        bottom.className = "info-bottom";
+        bottom.style.position = 'relative';
+        bottom.style.top = '0px';
+        bottom.style.margin = '0 auto';
+        var sharp = document.createElement("img");
+        sharp.className="triangle";
+        //sharp.src = "https://webapi.amap.com/images/sharp.png";
+        //bottom.appendChild(sharp);
+        info.appendChild(bottom);
+        return info;
+    }
+
+    //关闭信息窗体
+    function closeInfoWindow() {
+        map.clearInfoWindow();
+    }
+
+    //解析定位结果
+    function onComplete(data) {
+        document.getElementById('status').innerHTML = '定位成功'
+        var lnglat = data.position.toString().split(",")
+        var j = lnglat[0]
+        var w = lnglat[1]
+        var str = [];
+        //str.push('定位结果：' + data.position);
+        str.push('<div style="font-size: 15px"> 经度：<span id="j">' + j+"</span></div>");
+        str.push('<div style="font-size: 15px"> 纬度：<span id="w">' + w+"</span></div>");
+        //str.push('定位类别：' + data.location_type);
+        str.push("<div style=\"font-size: 15px\"> 学校名称：<div><input id='mc' /></div></div>");
+        if (data.accuracy) {
+         //   str.push('精度：' + data.accuracy + ' 米');
+        }//如为IP精确定位结果则没有精度信息
+        //str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+        document.getElementById('result').innerHTML = str.join('<br>');
+
+        var geocoder = new AMap.Geocoder();
+        //map.add(marker);
+        marker.setPosition(lnglat);
+        geocoder.getAddress(lnglat, function(status, result) {
+            if (status === 'complete'&&result.regeocode) {
+                alert(result.regeocode.formattedAddress)
+                openInfo(lnglat,result.regeocode.formattedAddress)
+
+            }else{
+                log.error('根据经纬度查询地址失败')
+            }
+        });
+
+
+    }
+
+    function daohang(lnglat) {
+        layer.open({
+            type: 1,
+            title: "导航选择",
+            skin: "my-skin",
+            area: '300px',
+            content: "<div style='margin-left: 20px;padding: 10px 0'>请选择导航地图！<br>定位结果： " + lnglat + "</div>",
+            btn: ['高德', '取消'],
+            btn1: function () {
+                var lnglats = lnglat.split(",")
+                location.href = "https://uri.amap.com/marker?position=" + lnglats[0] + "," + lnglats[1] + "&name=定位地点"
+            }, btn2: function (index) {
+                layer.close(index)
+            }
+        })
+    }
+
+    //解析定位错误信息
+    function onError(data) {
+        document.getElementById('status').innerHTML = '定位失败'
+        document.getElementById('result').innerHTML = '失败原因排查信息:' + data.message + '</br>浏览器返回信息：' + data.originMessage;
+    }
+
+</script>
+</body>
+</html>
