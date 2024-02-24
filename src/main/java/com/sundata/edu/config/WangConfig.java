@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class WangConfig
 {
     /** 上传路径 */
-    private static String profile;
+    private static String profile="D:/ruoyi/uploadPath";
 
     /** 获取地址开关 */
     private static boolean addressEnabled;

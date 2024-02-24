@@ -27,7 +27,6 @@
             top: -47px;
             z-index: 100;
             font-size: 15px;
-
         }
 
         .btns div {
@@ -55,6 +54,16 @@
             cursor: pointer;
             float: left;
             border: 1px solid #0771E2;
+        }
+
+        .select {
+            width: 130px;
+
+        }
+
+        .select option {
+            background-color: #0C1F34;
+            padding: 2px;
         }
 
         .btnsbutton:hover {
@@ -186,12 +195,29 @@
         }
 
         .zsk {
-            margin-left: calc(35% - 175px);
+            /*margin-left: 75px;*/
+            margin-left: calc(50% - 220px);
             cursor: pointer;
         }
 
         .zsk:hover {
             color: #35DEEB;
+        }
+
+        .check {
+
+
+            margin-left: calc(50% - 220px);
+            width: 520px !important;
+        }
+
+
+        .check p {
+            background-color: #1A6173;
+            color: #35DEEB;
+            margin: 0;
+            padding-left: 5px;
+            float: left;
         }
     </style>
 
@@ -205,20 +231,40 @@
     <div>恩施州智慧教育GIS看板</div>
 </div>
 <div id="btns" class="btns">
-    <div style="width: 140px;margin-left: calc(15% - 75px)">概况信息窗</div>
+    <div id="gis02" style="width: 140px;margin-left: calc(15% - 75px)" hidden>概况信息窗</div>
 
-    <div class="zsk" onclick="getDitu('/js/json/enshizhou.json')">GIS展示框</div>
+
+    <div class="zsk" id="pb" onclick="toPb(1)">全屏开关</div>
+    <div onclick="getDitu('/js/json/enshizhou.json')" style="cursor: pointer;">GIS展示框</div>
     <button id="back" class="btnsbutton" onclick="getDitu('/js/json/enshizhou.json')">返回</button>
+    <button id="jbh" class="btnsbutton" onclick="setjbh(1)">仅名称</button>
 
-    <div style="width: 140px;margin-left: calc(35% - 175px)">列表信息窗</div>
+    <!--    <select  multiple="multiple"  type="checkbox" class="btnsbutton select" id="schoolType" onchange="schoolTypeChange()">-->
+    <!--        <option value="null">选择学校类型</option>-->
+    <!--        <option>幼儿园</option>-->
+    <!--        <option>完全小学</option>-->
+    <!--        <option>小学教学点</option>-->
+    <!--        <option>初级中学</option>-->
+    <!--        <option>完全中学</option>-->
+    <!--        <option>中职</option>-->
+    <!--        <option>特教学校</option>-->
+    <!--        <option>高级中学</option>-->
+    <!--        <option>高职或大学</option>-->
+    <!--        <option>九年一贯制</option>-->
+    <!--        <option>十二年一贯制</option>-->
+    <!--    </select>-->
+    <div id="gis03" style="width: 140px;margin-left: calc(35% - 290px)" hidden>列表信息窗</div>
 </div>
-<div style=" width: 30%;float: left;margin-top: -55px">
+
+
+<div id="gk" hidden style=" width: 30%;float: left;margin-top: -55px">
     <div class="title01" id="title02">恩施州教育局大数据</div>
     <div id="schooltj">
         <div class="title02">
             <div id="title01">恩施州教育局机构</div>
             <div class="title03" id="schooltj01">9个</div>
         </div>
+
         <div class="title02">
             <div class="title02-1">
                 <div>幼儿园</div>
@@ -249,27 +295,31 @@
                 <div class="title03" id="schooltj07"></div>
             </div>
         </div>
-        <!--    <div class="title02">-->
-        <!--        <div class="title02-1">-->
-        <!--            <div>教职工总数</div>-->
-        <!--            <div class="title03">82326人</div>-->
-        <!--        </div>-->
-        <!--        <div class="title02-1">-->
-        <!--            <div>学生总数</div>-->
-        <!--            <div class="title03">683565人</div>-->
-        <!--        </div>-->
-        <!--    </div>-->
     </div>
 
 </div>
-<div id="id1" style="top: -60px;width: 40%;float: left">
-
+<div id="id2" style=";width: 100%;height:90%;float: left">
+    <div class="check" id="schoolType" style="position: absolute;top: 110px " onchange="schoolTypeChange()">
+        <p><input type="checkbox" name="schooltypes" title="幼儿园" value="幼儿园"/>幼 </p>
+        <p><input type="checkbox" name="schooltypes" title="完全小学" value="完全小学"/>完小 </p>
+        <p><input type="checkbox" name="schooltypes" title="小学教学点" value="小学教学点"/>点小</p>
+        <p><input type="checkbox" name="schooltypes" title="初级中学" value="初级中学"/>初 </p>
+        <p><input type="checkbox" name="schooltypes" title="完全中学" value="完全中学"/>完中 </p>
+        <p><input type="checkbox" name="schooltypes" title="中职" value="中职"/>中职 </p>
+        <p><input type="checkbox" name="schooltypes" title="特教学校" value="特教学校"/>特教 </p>
+        <p><input type="checkbox" name="schooltypes" title="高级中学" value="高级中学"/>高 </p>
+        <p><input type="checkbox" name="schooltypes" title="高职或大学" value="高职或大学"/>高&大 </p>
+        <p><input type="checkbox" name="schooltypes" title="九年一贯制" value="九年一贯制"/>九 </p>
+        <p><input type="checkbox" name="schooltypes" title="十二年一贯制" value="十二年一贯制"/>十二</p>
+    </div>
+    <div id="id1" style=" ;width: 100%;height:90%;float: left">
+    </div>
 </div>
-<div style=" width: 30%;float: left;margin-top: -55px">
+<div id="lb" hidden style=" width: 30%;float: left;margin-top: -55px">
     <div class="title01" id="title03">恩施州教育局大数据</div>
     <div class="title04"><input id="schoolname" placeholder="请输入学校名称关键字查询">
-                <button onclick="searchSchool()">搜索</button>
-<!--        <button>搜索</button>-->
+        <button onclick="searchSchool()">搜索</button>
+        <!--                        <button>搜索</button>-->
     </div>
     <div class="title05 tutlebutton">
         <button style="height: 35px;width: auto">恩施州教育局</button>
@@ -319,7 +369,7 @@
 
 <script src="/js/mmlib.min.js"></script>
 <script src="/js/common.js"></script>
-<script src="/js/json/echarts-all.min.js"></script>
+<script src="/js/json/echarts-all.min.js?v=20240220"></script>
 
 <script type="text/javascript">
 
@@ -329,29 +379,212 @@
     var pagenow = 1
     var pageall = 1
     var cengshu = 2
+    var getditus = [null, null, null, null, null]
+    var zz = 0
 
+    function setjbh(num) {
+        if (num == null) {
+            getDitu(getditus[0], getditus[1], getditus[2], getditus[3], getditus[4], null)
+            document.getElementById("jbh").onclick = function (ev) {
+                setjbh(0)
+            }
+            document.getElementById("jbh").innerHTML = "仅名称"
+        } else {
+            getDitu(getditus[0], getditus[1], getditus[2], getditus[3], getditus[4], 1)
+            document.getElementById("jbh").onclick = function (ev) {
+                setjbh(null)
+            }
+            document.getElementById("jbh").innerHTML = "仅编号"
+        }
+    }
 
-    function show(i) {
-        layer.open({
-            skin: 'demo-class',
-            type: 1,
-            closeBtn :0,
-            area: ['325px', '430px'],
-            //closeBtn :0,
-            content: "<div style='padding:5px 0 0 10px'> <div>单位名称：" + schoollistnow[i].name + "</div>"
-                + "<div>单位地点：" + schoollistnow[i].address + "</div>"
-                + "<div>所属乡镇：" + schoollistnow[i].bsc + "</div>"
-                + "<div>经纬度：" + schoollistnow[i].coord + "</div>"
-                + "<div>导航：（使用手机版本进行导航）</div></div>"
-                + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja.jpg'></div>"
-                // + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja2.jpg'></div>"
-                + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja3.jpg'></div>",
-            btn: ['关闭'],
-            btn1: function (index) {
-                layer.close(index)
+    function getJsonName(school) {
+        var json, jyjname
+        if (school.jyj == "恩施市教育局") {
+            json = "/js/json/enshishi.json?v=20240220"
+            jyjname = "恩施市"
+        } else if (school.jyj == "利川市教育局") {
+            json = "/js/json/lichuan.json"
+            jyjname = "利川市"
+        } else if (school.jyj == "建始县教育局") {
+            json = "/js/json/jianshi.json"
+            jyjname = "建始县"
+        } else if (school.jyj == "巴东县教育局") {
+            json = "/js/json/badong.json"
+            jyjname = "巴东县"
+        } else if (school.jyj == "宣恩县教育局") {
+            json = "/js/json/xuanen.json"
+            jyjname = "宣恩县"
+        } else if (school.jyj == "咸丰县教育局") {
+            json = "/js/json/xianfeng.json"
+            jyjname = "咸丰县"
+        } else if (school.jyj == "来凤县教育局") {
+            json = "/js/json/laifeng.json"
+            jyjname = "来凤县"
+        } else if (school.jyj == "鹤峰县教育局") {
+            json = "/js/json/hefeng.json"
+            jyjname = "鹤峰县"
+        }
+        return json + "," + jyjname
+    }
+
+    function schoolTypeNUll() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]'); // 获取所有类型为checkbox的元素
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked=false
+        }
+    }
+
+    function schoolTypeChange() {
+        var arr = [];
+        $('input:checkbox').each(function () {
+            if ($(this).is(':checked')) { //判断选中
+                arr.push($(this).val())
             }
         });
+        var schoolType = document.getElementById("schoolType").value
+        if (schoollistnow.length > 0) {
+            var jons = getJsonName(schoollistnow[0]).split(",")
+            var temp = null
+            for (var i = 0; i < schoollistnow.length; i++) {
+                if (temp == null) {
+                    temp = schoollistnow[i].bsc
+                } else {
+                    if (temp != schoollistnow[i].bsc) {
+                        temp = null
+                        break
+                    }
+                }
+            }
+            if (temp != null) {
+                temp = temp.substring(19)
+            }
+            var xiangzhenName = temp
+            getDitu(jons[0], jons[1], xiangzhenName, null, arr)
+            //console.log(jons[0]+jons[1]+ xiangzhenName)
+        } else {
+            getDitu("/js/json/enshizhou.json", null, null, null, arr, null)
+        }
     }
+
+    function toPb(num) {
+        if (num == 0) {
+            document.getElementById("pb").onclick = function () {
+                toPb(1)
+            }
+            document.getElementById("pb").style.marginLeft = "calc(35% - 295px)"
+            document.getElementById("id2").style.width = "40%"
+            document.getElementById("gis02").hidden = false
+            document.getElementById("gis03").hidden = false
+            document.getElementById("gk").hidden = false
+            document.getElementById("lb").hidden = false
+
+            document.getElementById("schoolType").style.marginLeft = "163px"
+
+            var chart = echarts.init(document.getElementById('id1'));
+            chart.clear()
+            chart.resize({
+                width: document.documentElement.clientWidth * 0.4
+            })
+
+        } else if (num == 1) {
+            document.getElementById("pb").onclick = function () {
+                toPb(0)
+            }
+            document.getElementById("schoolType").style.marginLeft = "calc(50% - 220px)"
+
+            document.getElementById("pb").style.marginLeft = "calc(50% - 220px)"
+            document.getElementById("id2").style.width = "100%"
+            document.getElementById("gis02").hidden = true
+            document.getElementById("gis03").hidden = true
+            document.getElementById("gk").hidden = true
+            document.getElementById("lb").hidden = true
+            var chart = echarts.init(document.getElementById('id1'));
+            chart.clear()
+            chart.resize({
+                width: document.documentElement.clientWidth
+            })
+        }
+        getDitu(getditus[0], getditus[1], getditus[2], getditus[3], getditus[4])
+    }
+
+    //弹框显示学校名称、地点、图片信息等
+    function show(i, j) {
+        if (j == 1) {
+            var name = schoollistnow[i].name
+            if (schoollistnow[i].name.length < 5) {
+                name = schoollistnow[i].value
+            }
+            layer.open({
+                skin: 'demo-class',
+                type: 1,
+                closeBtn: 0,
+                area: ['325px', '430px'],
+                //closeBtn :0,
+                content: "<div style='padding:5px 0 0 10px'> <div>单位名称：" + name + "</div>"
+                    + "<div>单位地点：" + schoollistnow[i].address + "</div>"
+                    + "<div>所属乡镇：" + schoollistnow[i].bsc + "</div>"
+                    + "<div>经纬度：" + schoollistnow[i].coord + "</div>"
+                    + "<div>导航：（使用手机版本进行导航）</div></div>"
+                    + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja.jpg'></div>"
+                    // + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja2.jpg'></div>"
+                    + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja3.jpg'></div>",
+                btn: ['关闭'],
+                btn1: function (index) {
+                    layer.close(index)
+                }
+            });
+        } else {
+            var name = schoollistAll[i].name
+            if (schoollistAll[i].name.length < 5) {
+                name = schoollistAll[i].value
+            }
+
+            //if (zz == 0) {
+            layer.open({
+                skin: 'demo-class',
+                type: 1,
+                closeBtn: 0,
+                area: ['325px', '430px'],
+                //closeBtn :0,
+                content: "<div style='padding:5px 0 0 10px'> <div>单位名称：" + name + "</div>"
+                    + "<div>单位地点：" + schoollistAll[i].address + "</div>"
+                    + "<div>所属乡镇：" + schoollistAll[i].bsc + "</div>"
+                    + "<div>经纬度：" + schoollistAll[i].coord + "</div>"
+                    + "<div>导航：（使用手机版本进行导航）</div></div>"
+                    + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja.jpg'></div>"
+                    // + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja2.jpg'></div>"
+                    + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja3.jpg'></div>",
+                btn: ['关闭'],
+                btn1: function (index) {
+                    layer.close(index)
+                }
+            });
+        }
+        // } else {
+        //     layer.open({
+        //         skin: 'demo-class',
+        //         type: 1,
+        //         closeBtn: 0,
+        //         area: ['325px', '430px'],
+        //         //closeBtn :0,
+        //         content: "<div style='padding:5px 0 0 10px'> <div>单位名称：" + schoollistnow[i].name + "</div>"
+        //             + "<div>单位地点：" + schoollistnow[i].address + "</div>"
+        //             + "<div>所属乡镇：" + schoollistnow[i].bsc + "</div>"
+        //             + "<div>经纬度：" + schoollistnow[i].coord + "</div>"
+        //             + "<div>导航：（使用手机版本进行导航）</div></div>"
+        //             + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja.jpg'></div>"
+        //             // + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja2.jpg'></div>"
+        //             + "<div><img style='width: 200px;height: 100px;padding: 5px' src='/img/school/es/xja3.jpg'></div>",
+        //         btn: ['关闭'],
+        //         btn1: function (index) {
+        //             layer.close(index)
+        //         }
+        //     });
+        // }
+
+    }
+
 
     function pageTo(num, xiangzhenName) {
         if (num == -1) {
@@ -371,52 +604,81 @@
                 pagelast = schoollistnow.length
             }
 
-            var bh = getBh(schoollistnow[0].jyj.substring(0, 3))
+            var bh = ""//getBh(schoollistnow[0].jyj.substring(0, 3))
 
             for (var i = (pagenow - 1) * 10; i < pagelast; i = i + 2) {
+
                 var sch01 = schoollistnow[i].name
-                if (schoollistnow[i].name.length > 10) {
+                var bhid = schoollistnow[i].value
+                if (schoollistnow[i].name.length < 5) {
+                    sch01 = schoollistnow[i].value
+                    bhid = schoollistnow[i].name
+                }
+                if (sch01.length > 10) {
                     sch01 = sch01.substring(3)
                     if (sch01.length > 10) {
                         sch01 = sch01.substring(0, 5) + "..." + sch01.substring(sch01.length - 5)
                     }
                 }
-                if (xiangzhenName != null) {
-                    if (i + 1 < 10) {
-                        sch01 = bh + "00" + (i + 1) + sch01
-                    } else if (i + 1 < 100) {
-                        sch01 = bh + "0" + (i + 1) + sch01
-                    } else if (i + 1 < 1000) {
-                        sch01 = bh + (i + 1) + sch01
-                    }
-                }
+                sch01 = bhid + sch01
+
+
+                // var sch01 = schoollistnow[i].name
+                // if (schoollistnow[i].name.length > 10) {
+                //     sch01 = sch01.substring(3)
+                //     if (sch01.length > 10) {
+                //         sch01 = sch01.substring(0, 5) + "..." + sch01.substring(sch01.length - 5)
+                //     }
+                // }
+                // if (xiangzhenName != null) {
+                //     if (i + 1 < 10) {
+                //         sch01 = bh + "00" + (i + 1) + sch01
+                //     } else if (i + 1 < 100) {
+                //         sch01 = bh + "0" + (i + 1) + sch01
+                //     } else if (i + 1 < 1000) {
+                //         sch01 = bh + (i + 1) + sch01
+                //     }
+                // }
                 if (i + 1 < schoollistnow.length) {
 
+                    // var sch02 = schoollistnow[i + 1].name
+                    // if (schoollistnow[i + 1].name.length > 10) {
+                    //     sch02 = sch02.substring(3)
+                    //     if (sch02.length > 10) {
+                    //         sch02 = sch02.substring(0, 5) + "..." + sch02.substring(sch02.length - 5)
+                    //     }
+                    // }
+                    // if (xiangzhenName != null) {
+                    //     if (i + 1 < 10) {
+                    //         sch02 = bh + "00" + (i + 2) + sch02
+                    //     } else if (i + 1 < 100) {
+                    //         sch02 = bh + "0" + (i + 2) + sch02
+                    //     } else if (i + 1 < 1000) {
+                    //         sch02 = bh + (i + 2) + sch02
+                    //     }
+                    // }
                     var sch02 = schoollistnow[i + 1].name
+                    var bhid2 = schoollistnow[i + 1].value
+                    if (schoollistnow[i + 1].name.length < 5) {
+                        sch02 = schoollistnow[i + 1].value
+                        bhid2 = schoollistnow[i + 1].name
+                    }
                     if (schoollistnow[i + 1].name.length > 10) {
                         sch02 = sch02.substring(3)
                         if (sch02.length > 10) {
                             sch02 = sch02.substring(0, 5) + "..." + sch02.substring(sch02.length - 5)
                         }
                     }
-                    if (xiangzhenName != null) {
-                        if (i + 1 < 10) {
-                            sch02 = bh + "00" + (i + 2) + sch02
-                        } else if (i + 1 < 100) {
-                            sch02 = bh + "0" + (i + 2) + sch02
-                        } else if (i + 1 < 1000) {
-                            sch02 = bh + (i + 2) + sch02
-                        }
-                    }
+                    sch02 = bhid2 + sch02
 
                     schoollisthtml = schoollisthtml + " <div class=\"title05\">" +
-                        "<div><button onclick='show(" + i + ")' title='" + schoollistnow[i].name + "' >" + sch01 + "</button></div>" +
-                        "<div> <button onclick='show(" + (i + 1) + ")'title='" + schoollistnow[i + 1].name + "' >" + sch02 + "</button></div>" +
+                        "<div><button onclick='show(" + i + ",1)' title='" + schoollistnow[i].name + "' >" + sch01 + "</button></div>" +
+                        "<div> <button onclick='show(" + (i + 1) + ",1)'title='" + schoollistnow[i + 1].name + "' >" + sch02 + "</button></div>" +
                         "</div>"
 
                 } else {
                     schoollisthtml = schoollisthtml + " <div class=\"title05\">" +
-                        "<div><button onclick='show(" + i + ")' title='" + schoollistnow[i].name + "'style=\"padding: 5px 16px;\">" + sch01 + "</button></div>" +
+                        "<div><button onclick='show(" + i + ",1)' title='" + schoollistnow[i].name + "'style=\"padding: 5px 16px;\">" + sch01 + "</button></div>" +
                         "</div>"
                 }
             }
@@ -436,87 +698,79 @@
 
     }
 
+    var schooltjname = new Array()
+
     function schooltjlist(num, schooltj, jyjname, xiangzhenName) {
-        var schooltjnum = [0, 0, 0, 0, 0, 0]
-        if (schooltj.length > 0) {
-            // for (var i = 0; i < schooltj.length; i++) {
-            //
-            //     if(schooltj[i].schooltype.indexOf("幼儿园")!=-1){
-            //         schooltjnum[0]++
-            //     }else if(schooltj[i].schooltype.indexOf("小学")!=-1){
-            //         schooltjnum[1]++
-            //     }else if(schooltj[i].schooltype.indexOf("初级中学")!=-1){
-            //         schooltjnum[2]++
-            //     }else if(schooltj[i].schooltype.indexOf("初中")!=-1){
-            //         schooltjnum[2]++
-            //     }else if(schooltj[i].schooltype.indexOf("完全中学")!=-1){
-            //         schooltjnum[2]++
-            //     }else if(schooltj[i].schooltype.indexOf("高级中学")!=-1){
-            //         schooltjnum[3]++
-            //     }else if(schooltj[i].schooltype.indexOf("九年一贯制")!=-1){
-            //         schooltjnum[4]++
-            //     }else if(schooltj[i].schooltype.indexOf("十二年一贯制")!=-1){
-            //         schooltjnum[5]++
-            //     }
-            // }
-            for (var i = 0; i < schooltj.length; i++) {
-                if (schooltj[i].schooltype == 9) {
-                    schooltjnum[0]++
-                } else if (schooltj[i].schooltype == 1) {
-                    schooltjnum[1]++
-                } else if (schooltj[i].schooltype == 2) {
-                    var ss1 = schooltj[i].name.indexOf("职业")
-                    if (ss1 != -1) {
-                        var ss2 = schooltj[i].name.indexOf("中等")
-                        if (ss2 != -1) {
-                            schooltjnum[4]++
-                        } else {
-                            schooltjnum[5]++
-                        }
-                    } else {
-                        schooltjnum[2]++
-                    }
+        //console.log(schooltj)
+        schooltjname = new Array()
+        var schooltjnum = new Array()
 
-                } else if (schooltj[i].schooltype == 3) {
-
-                    schooltjnum[2]++
-
-                } else if (schooltj[i].schooltype == 4) {
-                    schooltjnum[3]++
-                } else if (schooltj[i].schooltype == 5) {
-                    schooltjnum[3]++
+        for (var i = 0; i < schooltj.length; i++) {
+            var boo = false
+            for (var j = 0; j < schooltjname.length; j++) {
+                if (schooltjname[j] == schooltj[i].schooltype) {
+                    boo = true
                 }
+            }
+            if (boo == false) {
+                schooltjname.push(schooltj[i].schooltype)
+            }
+        }
+        for (var i = 0; i < schooltjname.length; i++) {
+            schooltjnum.push(0)
+        }
+        for (var i = 0; i < schooltj.length; i++) {
+            for (var j = 0; j < schooltjname.length; j++) {
+                if (schooltjname[j] == schooltj[i].schooltype) {
+                    schooltjnum[j]++
+                }
+            }
+        }
+        //console.log(schooltjnum)
+
+
+        var schooltjhtml = ""
+        var jyjjg = ""
+        var schooltj01 = ""
+
+        if (num == 0) {
+            jyjjg = "恩施州教育局机构"
+            document.getElementById("title02").innerHTML = "恩施州教育大数据"
+            document.getElementById("title03").innerHTML = "恩施州教育大数据"
+            schooltj01 = "9个"
+        } else if (num == 1) {
+            jyjjg = jyjname + "教育局机构"
+            document.getElementById("title02").innerHTML = jyjname + "教育大数据"
+            document.getElementById("title03").innerHTML = jyjname + "教育大数据"
+            schooltj01 = "1个"
+        } else if (num == 2) {
+            jyjjg = xiangzhenName + "教育局机构"
+            document.getElementById("title02").innerHTML = xiangzhenName + "教育大数据"
+            document.getElementById("title03").innerHTML = xiangzhenName + "教育大数据"
+            schooltj01 = "0个"
+        }
+        schooltjhtml = " <div class=\"title02\">\n" +
+            "            <div id=\"title01\">" + jyjjg + "</div>\n" +
+            "            <div class=\"title03\" id=\"schooltj01\">" + schooltj01 + "</div>\n" +
+            "        </div>\n"
+
+        for (var i = 0; i < schooltjname.length; i++) {
+            if (i % 2 == 0) {
+                schooltjhtml = schooltjhtml + "        <div class=\"title02\">\n" +
+                    "            <div class=\"title02-1\">\n" +
+                    "                <div>" + schooltjname[i] + "</div>\n" +
+                    "                <div class=\"title03\" >" + schooltjnum[i] + "</div>\n" +
+                    "            </div>\n"
+            } else {
+                schooltjhtml = schooltjhtml + "            <div class=\"title02-1\">\n" +
+                    "                <div>" + schooltjname[i] + "</div>\n" +
+                    "                <div class=\"title03\" >" + schooltjnum[i] + "</div>\n" +
+                    "            </div>\n" +
+                    "        </div>"
             }
 
         }
-
-        if (num == 0) {
-            document.getElementById("title01").innerHTML = "恩施州教育局机构"
-            document.getElementById("title02").innerHTML = "恩施州教育大数据"
-            document.getElementById("title03").innerHTML = "恩施州教育大数据"
-            document.getElementById("schooltj01").innerHTML = "9个"
-            //schooltjnum[5] = 3
-        } else if (num == 1) {
-            document.getElementById("title01").innerHTML = jyjname + "教育局机构"
-            document.getElementById("title02").innerHTML = jyjname + "教育大数据"
-            document.getElementById("title03").innerHTML = jyjname + "教育大数据"
-            document.getElementById("schooltj01").innerHTML = "1个"
-            //schooltjnum[5] = 0
-        } else if (num == 2) {
-
-            document.getElementById("title01").innerHTML = xiangzhenName + "教育局机构"
-            document.getElementById("title02").innerHTML = xiangzhenName + "教育大数据"
-            document.getElementById("title03").innerHTML = xiangzhenName + "教育大数据"
-            document.getElementById("schooltj01").innerHTML = "0个"
-            // schooltjnum[5] = 0
-        }
-        document.getElementById("schooltj02").innerHTML = schooltjnum[0] + "所"
-        document.getElementById("schooltj03").innerHTML = schooltjnum[1] + "所"
-        document.getElementById("schooltj04").innerHTML = schooltjnum[2] + "所"
-        document.getElementById("schooltj05").innerHTML = schooltjnum[3] + "所"
-        document.getElementById("schooltj06").innerHTML = schooltjnum[4] + "所"
-        document.getElementById("schooltj07").innerHTML = schooltjnum[5] + "所"
-
+        document.getElementById("schooltj").innerHTML = schooltjhtml
     }
 
     function getBh(jyjname) {
@@ -541,7 +795,23 @@
         return bh
     }
 
-    function getDitu(json, jyjname, xiangzhenName, schoolname) {
+    function getDitu(json, jyjname, xiangzhenName, schoolname, schoolType, jbh) {
+        getditus[0] = json
+        getditus[1] = jyjname
+        getditus[2] = xiangzhenName
+        getditus[3] = schoolname
+        getditus[4] = schoolType
+
+        document.getElementById("jbh").onclick = function (ev) {
+            setjbh(0)
+        }
+        document.getElementById("jbh").innerHTML = "仅名称"
+
+        if (schoolType == null ) {
+            schoolTypeNUll()
+        }
+
+
         cengshu = 2
         var wid = document.documentElement.clientWidth
 
@@ -557,38 +827,38 @@
         var ss
         $.ajax({
             async: false,
-            url: "/js/json/package.json",//同文件夹下的json文件路径
+            url: "/js/json/package.json?v=20240219",//同文件夹下的json文件路径
             type: "GET",//请求方式为get
             dataType: "json", //返回数据格式为json
             success: function (data) {//请求成功完成后要执行的方法
                 //console.log(data);
                 ss = data
-
             }
         })
         var school
-        // if (schoollistAll != null) {
-        //     school = schoollistAll
-        // } else {
-        $.ajax({
-            async: false,
-            url: "/js/json/school.json?v=20240131",//同文件夹下的json文件路径
-            type: "GET",//请求方式为get
-            dataType: "json", //返回数据格式为json
-            success: function (data) {//请求成功完成后要执行的方法
-                // console.log(data);
-                var sch=new Array()
-                for(var i=0;i<data.length;i++){
-                    if(data[i].schooltype!=9){
+        if (schoollistAll != null) {
+            school = schoollistAll
+        } else {
+            $.ajax({
+                async: false,
+                url: "/js/json/school.json?v=20240220",//同文件夹下的json文件路径
+                type: "GET",//请求方式为get
+                dataType: "json", //返回数据格式为json
+                success: function (data) {//请求成功完成后要执行的方法
+                    // console.log(data);
+                    var sch = new Array()
+                    for (var i = 0; i < data.length; i++) {
+                        // if (data[i].schooltype != "幼儿园") {// 隐藏幼儿园
                         sch.push(data[i])
+                        //}
                     }
-                }
-                school = sch
-                schoollistAll = sch
-            }
-        })
 
-        // }
+                    school = sch
+                    schoollistAll = sch
+                }
+            })
+
+        }
 
         $.get(json, function (lzjson) {
                 var selectjson = lzjson
@@ -617,6 +887,7 @@
                 var chart = echarts.init(document.getElementById('id1'));
 
 
+                var labelsize = 3
                 var option = {
                     dataRange: {
                         show: false,
@@ -645,13 +916,24 @@
                                     // + "<br />学校数据：" + "恩施市学校数据"
                                 );
                             } else {
-                                return (
-                                    // params.seriesName +
-                                    "单位名称：" + params.name
-                                    // + "<br />教师数量：" + params.value
-                                    // + "<br />学生数量：" + params.value
-                                    + "<br />单位位置：" + params.data.coord
-                                );
+                                if (params.name.length < 5) {
+                                    return (
+                                        // params.seriesName +
+                                        "单位名称：" + params.value
+                                        // + "<br />教师数量：" + params.value
+                                        // + "<br />学生数量：" + params.value
+                                        + "<br />单位位置：" + params.data.address
+                                    );
+                                } else {
+
+                                    return (
+                                        // params.seriesName +
+                                        "单位名称：" + params.name
+                                        // + "<br />教师数量：" + params.value
+                                        // + "<br />学生数量：" + params.value
+                                        + "<br />单位位置：" + params.data.address
+                                    );
+                                }
                             }
                         }
                     },
@@ -691,12 +973,11 @@
                                 }
                             },
                             label: {
-
                                 normal: {
                                     show: true, // 是否显示标签，默认不显示
                                     position: 'inside', // 标签位置，默认上方
                                     color: '#FFFFFF',
-                                    fontSize: 18
+                                    fontSize: 14
 
                                 },
                                 emphasis: {
@@ -715,39 +996,13 @@
                     ],
 
                 };
-                option.series[0].markPoint = {symbolSize: 20, data: []}
-                //if (json == '/js/json/enshishi.json') {
-                // option.series[0].markPoint = {
-                //     symbol: 'pin',//circle,arrow,triangle
-                //     symbolSize: 30,
-                //     data: school
-                // };
-                // option.series[0].markPoint = {
-                //     symbol: 'pin',//circle,arrow,triangle
-                //     symbolSize: 30,
-                //     data: [{
-                //         name: '定位数据',
-                //         value: '定位数据',
-                //         coord: [109.493731, 30.308272],
-                //         // itemStyle: {
-                //         //     color: "#E9FA3B" // 设置 markPoint 的颜色为红色
-                //         // },
-                //         // label: {
-                //         //     color: "#06F330"
-                //         // }
-                //
-                //     }, {
-                //         name: '恩施市二中',
-                //         value: '恩施市二中',
-                //         coord: [109.586761, 30.382406]
-                //
-                //     }]
-                //
-                // };
-                // }
+                option.series[0].markPoint = {label: {fontSize: labelsize}, symbolSize: 12, data: []}
+
                 if (json == '/js/json/enshizhou.json') {
+                    zz = 0
+                    schoollistnow = new Array()
                     option.series[0].markPoint = {
-                        symbol: 'pin',//circle,arrow,triangle
+                        symbol: 'pin',//circle,arrow,triangle,image://img/user.png
                         symbolSize: 30,
                         data: ss
                     };
@@ -789,133 +1044,241 @@
                         "                <button style=\"padding: 5px 16px;\">恩施州高级中学</button>\n" +
                         "            </div>\n" +
                         "        </div>"
-
-                    // var schooltj = new Array()
-                    // for (var i = 0; i < school.length; i++) {
-                    //         if (xiangzhenName == null) {
-                    //         if (school[i].jyj == jyjname + "教育局") {
-                    //             schooltj.push(school[i].name)
-                    //         }
-                    //     } else {
-                    //         if (school[i].bsc == jyjname + xiangzhenName) {
-                    //             schooltj.push(school[i].name)
-                    //         }
-                    //     }
-                    // }
-
-
                     schooltjlist(0, school)
-                    // var jss=new Array()
-                    // $.get('/js/json/package.json', function (jyj) {
-                    //     jss=jyj
-                    //     var js=new Array()
-                    //     js.push({name:jyj[0].name,corrd:jyj[0].corrd})
-                    //
-                    // })
-                    //
-                    // console.log(jss)
-                    // option.series[0].markPoint = {
-                    //     symbol: 'pin',//circle,arrow,triangle
-                    //     symbolSize: 30,
-                    //     data:[{name:jss[0].name,corrd:jss[0].corrd}]
-                    // };
+
+
+                    // if (zjb == null) {
+
+                    var xzmarkPoint = new Array()
+                    var xp = 1;
+
+                    schoollistnow = new Array()
+
+                    for (var p = 0; p < school.length; p++) {
+                        var bh = ""//getBh(school[p].jyj.substring(0,3))
+
+                        if (schoollistAll[p].value == schoollistAll[p].name) {
+                            var pvalue = ""
+                            if (xp < 10) {
+                                pvalue = bh + "000" + xp
+                            } else if (xp < 100) {
+                                pvalue = bh + "00" + xp
+                            } else if (xp < 1000) {
+                                pvalue = bh + "0" + xp
+                            } else if (xp < 10000) {
+                                pvalue = bh + xp
+                            }
+                            pvalue=""+xp
+                            schoollistAll[p].value = pvalue
+                            school[p].value = pvalue
+                        }
+
+
+                        if (jbh == null) {
+
+                            if (school[p].name.length < 5) {
+                                var pv = school[p].value
+                                school[p].value = school[p].name
+                                school[p].name = pv
+                            }
+
+                            //     labelsize=10
+                            //     var pvalue=""
+                            //     if (xp < 10) {
+                            //         pvalue = bh + "000" + xp
+                            //     } else if (xp < 100) {
+                            //         pvalue = bh + "00" + xp
+                            //     } else if (xp < 1000) {
+                            //         pvalue = bh + "0" + xp
+                            //     } else if (xp < 10000) {
+                            //         pvalue = bh + xp
+                            //     }
+                            //     school[p].value=pvalue
+                        } else {
+                            if (school[p].value.length < 5) {
+                                var pv = school[p].value
+                                school[p].value = school[p].name
+                                school[p].name = pv
+                            }
+                        }
+
+                        //schoollistnow.push(school[p])
+
+                        delete school[p].symbolSize
+                        delete school[p].label
+                        delete school[p].itemStyle
+
+
+                        if (schoolType != null && schoolType != "") {
+                            for (var s = 0; s < schoolType.length; s++) {
+                                if (school[p].schooltype == schoolType[s]) {
+                                    //school[p].symbol="image:///img/zpic.png"
+                                    xzmarkPoint.push(school[p])
+                                }
+                            }
+                        }
+                        xp++
+                    }
 
                     // option.series[0].markPoint = {
-                    //     symbol: 'pin',//circle,arrow,triangle
+                    //     symbol: 'arrow',//circle,arrow,triangle,image://img/user.png
                     //     symbolSize: 30,
-                    //     data: [
-                    //         {
-                    //             name: '恩施州教育局',
-                    //             value: '恩施州教育局',
-                    //             coord: [109.484665,30.26752],
-                    //         }, {
-                    //             name: '恩施市教育局',
-                    //             value: '恩施市教育局',
-                    //             coord: [109.46976,30.295619]
-                    //         }, {
-                    //             name: '利川市教育局',
-                    //             value: '利川市教育局',
-                    //             coord: [108.938018,30.296501]
-                    //         }, {
-                    //             name: '建始县教育局',
-                    //             value: '建始县教育局',
-                    //             coord: [109.724133,30.600394]
-                    //         }, {
-                    //             name: '巴东县教育局',
-                    //             value: '巴东县教育局',
-                    //             coord: [110.346023,31.064626]
-                    //         }, {
-                    //             name: '咸丰县教育局',
-                    //             value: '咸丰县教育局',
-                    //             coord: [109.15158,29.676101]
-                    //         }, {
-                    //             name: '宣恩县教育局',
-                    //             value: '宣恩县教育局',
-                    //             coord: [109.489836,29.990933]
-                    //         }, {
-                    //             name: '鹤峰县教育局',
-                    //             value: '鹤峰县教育局',
-                    //             coord: [110.035108,29.889745]
-                    //         }, {
-                    //             name: '来凤县教育局',
-                    //             coord: [109.412167,29.51347],
-                    //             add: '来凤县教育局'
-                    //         }]
+                    //     data: ss
                     // };
 
-
+                    if (xzmarkPoint.length == 0) {
+                        option.series[0].markPoint = {
+                            // label: {fontSize: 10},
+                            symbolSize: 25,
+                            data: ss
+                        }
+                    } else {
+                        option.series[0].markPoint = {label: {fontSize: labelsize}, symbolSize: 12, data: xzmarkPoint}
+                    }
+                    // }
                 } else {
+                    zz = 1
                     if (jyjname != null) {
                         if (xiangzhenName != null) {
                             var xzmarkPoint = new Array()
                             var xp = 1;
-                            var bh = getBh(jyjname)
+                            var bh = ""//getBh(jyjname)
 
+                            var labelsize = 3
                             for (var p = 0; p < school.length; p++) {
-                                if (school[p].bsc == jyjname + xiangzhenName) {
+                                if (school[p].bsc.substring(19) == xiangzhenName) {
+                                    // if (school[p].bsc == jyjname + xiangzhenName) {
                                     //xzmarkPoint.push(bh+xp)
-                                    if (school[p].value != schoolname) {
 
-                                        if (xp < 10) {
-                                            school[p].value = bh + "00" + xp
-                                        } else if (xp < 100) {
-                                            school[p].value = bh + "0" + xp
-                                        } else if (xp < 1000) {
-                                            school[p].value = bh + xp
+                                    //切换编号和名称
+                                    if (jbh == null) {
+                                        if (school[p].name.length < 5) {
+                                            var pv = school[p].value
+                                            school[p].value = school[p].name
+                                            school[p].name = pv
                                         }
+                                        //     labelsize=10
+                                        //     if (xp < 10) {
+                                        //         school[p].value = bh + "00" + xp
+                                        //     } else if (xp < 100) {
+                                        //         school[p].value = bh + "0" + xp
+                                        //     } else if (xp < 1000) {
+                                        //         school[p].value = bh + xp
+                                        //     }
+                                    } else {
+                                        var pv = school[p].value
+                                        school[p].value = school[p].name
+                                        school[p].name = pv
                                     }
-                                    xzmarkPoint.push(school[p])
+
+                                    delete school[p].symbolSize
+                                    delete school[p].label
+                                    delete school[p].itemStyle
+                                    // school[p].symbolSize=12
+                                    // school[p].label={}
+                                    // school[p].itemStyle={}
+
+
+                                    if (school[p].value == schoolname||school[p].name == schoolname) {
+                                        school[p].symbolSize=80
+                                        school[p].label={fontSize: 20,color:"red"}
+                                        school[p].itemStyle={color:"yellow"}
+                                        //
+                                        //     if (xp < 10) {
+                                        //         school[p].value = bh + "00" + xp
+                                        //     } else if (xp < 100) {
+                                        //         school[p].value = bh + "0" + xp
+                                        //     } else if (xp < 1000) {
+                                        //         school[p].value = bh + xp
+                                        //     }
+                                    }
+
+                                    if (schoolType != null && schoolType != "") {
+                                        for (var s = 0; s < schoolType.length; s++) {
+                                            if (school[p].schooltype == schoolType[s]) {
+                                                xzmarkPoint.push(school[p])
+                                            }
+                                        }
+
+                                        // if(school[p].schooltype==schoolType){
+                                        //     xzmarkPoint.push(school[p])
+                                        // }
+                                    } else {
+                                        xzmarkPoint.push(school[p])
+                                    }
+
+
                                     xp++
                                 }
                             }
 
-                            option.series[0].markPoint = {symbolSize: 25, data: xzmarkPoint}
+                            option.series[0].markPoint = { data: xzmarkPoint}
 
                         } else {
-
-
                             var xzmarkPoint = new Array()
                             var xp = 1;
-                            var bh = getBh(jyjname)
+                            var bh = ""//getBh(jyjname)
 
+                            var labelsize =3
                             for (var p = 0; p < school.length; p++) {
+
                                 if (school[p].jyj == jyjname + "教育局") {
                                     //xzmarkPoint.push(bh+xp)
-                                    if (school[p].value != schoolname) {
+                                    // if (school[p].value != schoolname) {
+                                    //
+                                    //     if (xp < 10) {
+                                    //         school[p].value = bh + "00" + xp
+                                    //     } else if (xp < 100) {
+                                    //         school[p].value = bh + "0" + xp
+                                    //     } else if (xp < 1000) {
+                                    //         school[p].value = bh + xp
+                                    //     }
+                                    // }
+                                    //切换编号和名称
+                                    if (jbh == null) {
 
-                                        if (xp < 10) {
-                                            school[p].value = bh + "00" + xp
-                                        } else if (xp < 100) {
-                                            school[p].value = bh + "0" + xp
-                                        } else if (xp < 1000) {
-                                            school[p].value = bh + xp
+                                        if (school[p].name.length < 5) {
+                                            var pv = school[p].value
+                                            school[p].value = school[p].name
+                                            school[p].name = pv
                                         }
+
+                                        //     labelsize=10
+                                        //     if (xp < 10) {
+                                        //         school[p].value = bh + "00" + xp
+                                        //     } else if (xp < 100) {
+                                        //         school[p].value = bh + "0" + xp
+                                        //     } else if (xp < 1000) {
+                                        //         school[p].value = bh + xp
+                                        //     }
+                                    } else {
+                                        var pv = school[p].value
+                                        school[p].value = school[p].name
+                                        school[p].name = pv
                                     }
-                                    xzmarkPoint.push(school[p])
+
+                                    delete school[p].symbolSize
+                                    delete school[p].label
+                                    delete school[p].itemStyle
+
+                                    if (schoolType != null && schoolType != "") {
+                                        for (var s = 0; s < schoolType.length; s++) {
+                                            if (school[p].schooltype == schoolType[s]) {
+
+                                                xzmarkPoint.push(school[p])
+                                            }
+                                        }
+                                        // if(school[p].schooltype==schoolType){
+                                        //     xzmarkPoint.push(school[p])
+                                        // }
+                                    } else {
+                                        xzmarkPoint.push(school[p])
+                                    }
+
                                     xp++
                                 }
                             }
-                            option.series[0].markPoint = { symbolSize: 25, data: xzmarkPoint}
+                            option.series[0].markPoint = {label: {fontSize: labelsize}, symbolSize: 12, data: xzmarkPoint}
                         }
 
                         var j = 0;
@@ -930,7 +1293,8 @@
                                     schoollistnow.push(school[i])
                                 }
                             } else {
-                                if (school[i].bsc == jyjname + xiangzhenName) {
+                                // if (school[i].bsc == jyjname + xiangzhenName) {
+                                if (school[i].bsc.substring(19) == xiangzhenName) {
                                     schooltj.push(school[i])
                                     j++
                                     schoollistnow.push(school[i])
@@ -947,51 +1311,71 @@
                         var schoollisthtml = ""
                         if (schoollistnow.length > 0) {
 
-                            var bh = getBh(schoollistnow[0].jyj.substring(0, 3))
+                            var bh = ""//getBh(schoollistnow[0].jyj.substring(0, 3))
 
                             for (var i = 0; i < schoollistnow.length; i = i + 2) {
                                 if (i < 9) {
+                                    //  var sch01 = schoollistnow[i].name
                                     var sch01 = schoollistnow[i].name
+                                    var bhid = schoollistnow[i].value
+                                    if (schoollistnow[i].name.length < 5) {
+                                        sch01 = schoollistnow[i].value
+                                        bhid = schoollistnow[i].name
+                                    }
                                     if (sch01.length > 10) {
                                         sch01 = sch01.substring(3)
                                         if (sch01.length > 10) {
                                             sch01 = sch01.substring(0, 5) + "..." + sch01.substring(sch01.length - 5)
                                         }
                                     }
-                                   // if (xiangzhenName != null) {
-                                        if (i + 1 < 10) {
-                                            sch01 = bh + "00" + (i + 1) + sch01
-                                        } else if (i + 1 < 100) {
-                                            sch01 = bh + "0" + (i + 1) + sch01
-                                        } else if (i + 1 < 1000) {
-                                            sch01 = bh + (i + 1) + sch01
-                                        }
+                                    sch01 = bhid + sch01
+                                    // if (xiangzhenName != null) {
+
+
+                                    // if (i + 1 < 10) {
+                                    //     sch01 = bh + "00" + (i + 1) + sch01
+                                    // } else if (i + 1 < 100) {
+                                    //     sch01 = bh + "0" + (i + 1) + sch01
+                                    // } else if (i + 1 < 1000) {
+                                    //     sch01 = bh + (i + 1) + sch01
+                                    // }
+
+
                                     //}
 
                                     if (i + 1 < schoollistnow.length) {
+                                        // var sch02 = schoollistnow[i + 1].name
                                         var sch02 = schoollistnow[i + 1].name
+                                        var bhid2 = schoollistnow[i + 1].value
+                                        if (schoollistnow[i + 1].name.length < 5) {
+                                            sch02 = schoollistnow[i + 1].value
+                                            bhid2 = schoollistnow[i + 1].name
+                                        }
                                         if (sch02.length > 10) {
                                             sch02 = sch02.substring(3)
                                             if (sch02.length > 10) {
                                                 sch02 = sch02.substring(0, 5) + "..." + sch02.substring(sch02.length - 5)
                                             }
                                         }
-                                       // if (xiangzhenName != null) {
-                                            if (i + 1 < 10) {
-                                                sch02 = bh + "00" + (i + 2) + sch02
-                                            } else if (i + 1 < 100) {
-                                                sch02 = bh + "0" + (i + 2) + sch02
-                                            } else if (i + 1 < 1000) {
-                                                sch02 = bh + (i + 2) + sch02
-                                            }
+                                        sch02 = bhid2 + sch02
+                                        // if (xiangzhenName != null) {
+
+                                        // if (i + 1 < 10) {
+                                        //     sch02 = bh + "00" + (i + 2) + sch02
+                                        // } else if (i + 1 < 100) {
+                                        //     sch02 = bh + "0" + (i + 2) + sch02
+                                        // } else if (i + 1 < 1000) {
+                                        //     sch02 = bh + (i + 2) + sch02
+                                        // }
+
                                         //}
                                         schoollisthtml = schoollisthtml + " <div class=\"title05\">" +
-                                            "<div><button onclick='show(" + i + ")'title='" + schoollistnow[i].name + "'>" + sch01 + "</button></div>" +
-                                            "<div> <button onclick='show(" + (i + 1) + ")'title='" + schoollistnow[i + 1].name + "'>" + sch02 + "</button></div>" +
+                                            "<div><button onclick='show(" + i + ",1)'title='" + schoollistnow[i].name + "'>" + sch01 + "</button></div>" +
+                                            "<div> <button onclick='show(" + (i + 1) + ",1)'title='" + schoollistnow[i + 1].name + "'>" + sch02 + "</button></div>" +
                                             "</div>"
                                     } else {
                                         schoollisthtml = schoollisthtml + " <div class=\"title05\">" +
-                                            "<div><button onclick='show(" + i + ")'title='" + schoollistnow[i].name + "' style=\"padding: 5px 16px;\">" + sch01 + "</button></div>" +
+                                            "<div><button onclick='show(" + i + ",1)'title='" + schoollistnow[i].name + "' style=\"padding: 5px 16px;\">" + sch01 + "</button></div>" +
                                             "</div>"
                                     }
                                 }
@@ -1009,15 +1393,24 @@
                             }
 
                         }
-                        document.getElementById("schoollist").innerHTML = schoollisthtml
+
+                        if (schoolname == null) {
+                            document.getElementById("schoollist").innerHTML = schoollisthtml
+                        }
+
                     }
                 }
 
+
+                if (schoolType == null || schoolType == "null") {
+                    document.getElementById("schoolType").value = null
+                }
 
                 chart.off('georoam')
                 chart.on('georoam', function (params) {
 
                     // console.log("chart.offsetWidth=" + document.getElementById('id1').offsetWidth)
+
                     if (params.zoom != null) {
                         if (params.zoom > 1) {
                             if (cengshu < 13) {
@@ -1043,7 +1436,11 @@
                             fontSize = 12;
                             option.series[0].label.show = false;
                         }
-                        option.series[0].label.fontSize = fontSize;
+                        if(xiangzhenName==null) {
+                            option.series[0].markPoint.label.fontSize=cengshu + 1
+                            option.series[0].markPoint.symbolSize=cengshu+10
+                            option.series[0].label.fontSize = fontSize;
+                        }
                         chart.clear()
                         chart.setOption(option);
                         //console.log(option.series[0].label.fontSize)
@@ -1076,11 +1473,10 @@
                     //     }
                     // }
 
-
                     var indexof = params.name.indexOf("教育局")
                     if (indexof != -1) {
                         layer.open({
-                            closeBtn :0,
+                            closeBtn: 0,
                             skin: 'demo-class',
                             type: 1,
                             area: ['300px', '200px'],
@@ -1094,16 +1490,14 @@
                         });
                     }
 
-                    console.log("xianz=" + xiangzhenName)
+                    // console.log("xianz=" + xiangzhenName)
                     if (params.componentType != "markPoint") {
-
-
                         if (xiangzhenName == null) {
                             if ('/js/json/enshizhou.json' != json) {
                                 getDitu(json, jyjname, params.name)
                             }
                             if (params.name == "恩施市") {
-                                getDitu('/js/json/enshishi.json?v=2024', "恩施市")
+                                getDitu('/js/json/enshishi.json?v=20240220', "恩施市")
                             } else if (params.name == "利川市") {
                                 getDitu('/js/json/lichuan.json?v=2024', "利川市")
                             } else if (params.name == "建始县") {
@@ -1131,24 +1525,43 @@
                         if (params.value != null) {
                             var showi = 0;
                             if (params.value.length > 5) {
-                                for (var p = 0; p < schoollistnow.length; p++) {
-                                    if (schoollistnow[p].name == schoolname) {
+
+                                for (var p = 0; p < schoollistAll.length; p++) {
+                                    if (schoollistAll[p].value == params.value) {
                                         showi = p
                                     }
                                 }
+
+                                // if (zz == 0) {
+                                //     for (var p = 0; p < schoollistAll.length; p++) {
+                                //         if (schoollistAll[p].name == params.value) {
+                                //             showi = p
+                                //         }
+                                //     }
+                                // } else {
+                                //     for (var p = 0; p < schoollistnow.length; p++) {
+                                //         if (schoollistnow[p].name == params.value) {
+                                //             showi = p
+                                //         }
+                                //     }
+                                // }
+
                             } else {
-                                var value = Array.from(params.value);
-                                if (value[2] != 0) {
-                                    showi = Number(value[2] * 100)
-                                }
-                                if (value[3] != 0) {
-                                    showi = Number(showi) + Number(value[3] * 10)
-                                }
-                                if (value[4] != 0) {
-                                    showi = Number(showi) + Number(value[4])
-                                }
-                                showi = showi - 1
+                                //var value = Array.from(params.value);
+                                // if (value[2] != 0) {
+                                //     showi = Number(value[2] * 100)
+                                // }
+                                // if (value[3] != 0) {
+                                //     showi = Number(showi) + Number(value[3] * 10)
+                                // }
+                                // if (value[4] != 0) {
+                                //     showi = Number(showi) + Number(value[4])
+                                // }
+                                //
+                                //showi = showi - 1
+                                showi = params.value - 1
                             }
+
                             show(showi)
                         }
                     }
@@ -1161,13 +1574,13 @@
 
                 chart.clear()
                 chart.setOption(option);
-
             }
         );
     }
 
 
-    getDitu('/js/json/enshizhou.json')
+    getDitu('/js/json/enshizhou.json', null, null, null, null, 1)
+    toPb(0)
 
     function searchPageTo(num) {
         var pageall = Math.ceil(schoolSeacrchList.length / 10)
@@ -1178,7 +1591,10 @@
         }
         for (var i = (num - 1) * 10; i < pagelast; i = i + 2) {
             var sch01 = schoolSeacrchList[i].name
-            if (schoolSeacrchList[i].name.length > 10) {
+            if(schoolSeacrchList[i].name.length<5){
+                sch01 = schoolSeacrchList[i].value
+            }
+            if (sch01.length > 10) {
                 sch01 = sch01.substring(3)
                 if (sch01.length > 10) {
                     sch01 = sch01.substring(0, 5) + "..." + sch01.substring(sch01.length - 5)
@@ -1186,7 +1602,10 @@
             }
             if (i + 1 < schoolSeacrchList.length) {
                 var sch02 = schoolSeacrchList[i + 1].name
-                if (schoolSeacrchList[i + 1].name.length > 10) {
+                if(schoolSeacrchList[i+ 1].name.length<5){
+                    sch02 = schoolSeacrchList[i+ 1].value
+                }
+                if (sch02.length > 10) {
                     sch02 = sch02.substring(3)
                     if (sch02.length > 10) {
                         sch02 = sch02.substring(0, 5) + "..." + sch02.substring(sch02.length - 5)
@@ -1204,6 +1623,7 @@
             }
         }
         if (schoolSeacrchList.length > 10) {
+
             var numlast = num
             var numnext = num
             if (num > 1) {
@@ -1212,6 +1632,7 @@
             if (num < pageall) {
                 numnext = numnext + 1
             }
+
             schoollisthtml = schoollisthtml + "<div class='pages title05'><div style='width: 100%;'>" +
                 "<span onclick='searchPageTo(" + numlast + ")'>上一页</span>" +
                 "<span style='color: white;padding: 0 2px 0 10px'>" + num + "</span>" +
@@ -1222,50 +1643,26 @@
         document.getElementById("schoollist").innerHTML = schoollisthtml
     }
 
+
     function searchDituShow(school) {
-        var json = null
-        var jyjname = null
-        if (school.jyj == "恩施市教育局") {
-            json = "/js/json/enshishi.json"
-            jyjname = "恩施市"
-        } else if (school.jyj == "利川市教育局") {
-            json = "/js/json/lichuan.json"
-            jyjname = "利川市"
-        } else if (school.jyj == "建始县教育局") {
-            json = "/js/json/jianshi.json"
-            jyjname = "建始县"
-        } else if (school.jyj == "巴东县教育局") {
-            json = "/js/json/badong.json"
-            jyjname = "巴东县"
-        } else if (school.jyj == "宣恩县教育局") {
-            json = "/js/json/xuanen.json"
-            jyjname = "宣恩县"
-        } else if (school.jyj == "咸丰县教育局") {
-            json = "/js/json/xianfeng.json"
-            jyjname = "咸丰县"
-        } else if (school.jyj == "来凤县教育局") {
-            json = "/js/json/laifeng.json"
-            jyjname = "来凤县"
-        } else if (school.jyj == "鹤峰县教育局") {
-            json = "/js/json/hefeng.json"
-            jyjname = "鹤峰县"
-        }
-
-        getDitu(json, jyjname, school.bsc.substring(3), school.name)
-
-
+        var jons = getJsonName(school).split(",")
+        getDitu(jons[0], jons[1], school.bsc.substring(19), school.name)
     }
 
     function searchSchool() {
         var schoolname = document.getElementById("schoolname").value
         schoolname = schoolname.replace(/\s*/g, "");//去掉空格
+        console.log(schoolname)
         if (schoolname != "") {
             schoolSeacrchList = new Array()
             for (var i = 0; i < schoollistAll.length; i++) {
                 if (schoollistAll[i].name.indexOf(schoolname) != -1) {
                     schoolSeacrchList.push(schoollistAll[i])
+                }else if (schoollistAll[i].value.indexOf(schoolname) != -1) {
+                    schoolSeacrchList.push(schoollistAll[i])
                 }
             }
+            console.log(schoolSeacrchList)
             searchPageTo(1)
         }
     }

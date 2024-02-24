@@ -105,8 +105,8 @@
     <hr>
     <p id="result"></p>
     <hr>
-
-    <button type="button" id="fuzhi" style="background-color: #32A026;color: white;padding: 5px">复制学校名称及经纬度信息</button>
+    <button type="button"  style="background-color: #32A026;color: white;padding: 5px" onclick="saveDW()">提交当前定位数据</button>
+<!--    <button type="button" id="fuzhi" style="background-color: #32A026;color: white;padding: 5px">复制学校名称及经纬度信息</button>-->
     <!--    <p>由于众多浏览器已不再支持非安全域的定位请求，为保位成功率和精度，请升级您的站点到HTTPS。</p>-->
 </div>
 <!-- 配置安全密钥,自2021年12月02日升级，升级之后所申请的 key 必须配备安全密钥 jscode 一起使用 -->
@@ -119,41 +119,38 @@
 <script src="/js/common.js"></script>
 <script type="text/javascript" src="/js/ueditor/third-party/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=213011685f74f7c30aeaf9f834330f62&plugin=AMap.Geocoder"></script>
+<script src="/js/json/gis.js?v=20240223"></script>
 <script type="text/javascript">
 
-    document.getElementById("fuzhi").addEventListener('touchend', touch, false);
-    function touch(event){
-        var node = document.createElement('textarea');
-        if(document.getElementById("mc").value==""){
-            layer.open({
-                type: 1,
-                title: "导航选择",
-                skin: "my-skin",
-                area: '300px',
-                content: "<div >未输入学校名称</div>",
-                btn: ['关闭'],
-                btn1: function (index) {
-                    layer.close(index)
+    function saveDW(){
+        var value = window.location.search;
+        value=decodeURIComponent(value);
+        var schoolname=document.getElementById("mc").value
+        var j=document.getElementById("j").innerHTML
+        var w=document.getElementById("w").innerHTML
+
+        var index=value.indexOf("id=")
+        var id=value.substring(index+3)
+
+        $.ajax({
+            async: false,
+            url: "/gis/schoolgis/edit",
+            type: "POST",
+            data:{"id":id,"coord":j+","+w},
+            success: function (data) {
+                //console.log(data);
+                if(data.code==200){
+                    layer.msg("学校经纬度更新成功",{icon:1,time:1500})
+                }else {
+                    layer.msg("学校经纬度更新失败，请联系管理员处理?",{icon:2,time:1500})
                 }
-            });
-            return
-        }
-        node.value = document.getElementById("mc").value+"："+document.getElementById("j").innerHTML+","+document.getElementById("w").innerHTML;
-        node.setAttribute('readOnly','readOnly');
-        node.setAttribute('style',"position: fixed; left: 0; top: 0;opacity: 0;");
-        document.getElementsByTagName('body')[0].appendChild(node);
-        setTimeout(function() {
-            node.focus();
-            node.setSelectionRange(0, node.value.length);
-            try{
-                document.execCommand('copy', true);
-                alert("复制成功！");
-            } catch(e) {
-                alert("复制失败！");
             }
-            node.parentNode.removeChild(node);
-        }, 0);
+        })
+        console.log(value+schoolname+j+w)
+
+
     }
+
 
     //基本地图加载
     var map = new AMap.Map('container', {
@@ -175,6 +172,7 @@
         //result中包含浏览器ip地址等信息
         geolocation.getCurrentPosition(function (status, result) {
             if (status == 'complete') {
+                getSchool()
                 onComplete(result)
             } else {
                 onError(result)
@@ -195,9 +193,7 @@
             offset: new AMap.Pixel(0, 0)
         });
 
-
         marker.setMap(map);
-
 
         // map.clearOverlays();
         // var lng = e.point.lng;
@@ -239,11 +235,12 @@
         var info = [];
         // info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
         info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>学校信息</b><br>");
-        info.push("学校名称 : 获取学校名称<br>");
-        info.push("学校简称 : <input /><br>");
-        info.push("所属乡镇 : <select style='width: 150px'><option>建南镇</option></select><br>");
-        info.push("联系电话 : <input /><br>");
-        info.push("地址 :"+formattedAddress);
+        info.push("学校名称 : "+schoolMes.name+"<br>");
+        // info.push("学校简称 : <input /><br>");
+        info.push("所属乡镇 : "+schoolMes.bsc+"<br>");
+        info.push("联系电话 : "+schoolMes.phone+"<br>");
+        info.push("地址 :"+schoolMes.address);
+        info.push("当前经纬度 :"+lnglat);
         info.push("<br><button style='background-color: #00B4AA;border-radius: 5px;color: white;border:none;margin: 5px 0' onclick='daohang(\""+lnglat+"\")'>高德导航</button>");
         info.push("</div>");
         infoWindow = new AMap.InfoWindow({
@@ -251,9 +248,9 @@
              //content: info.join("")  //使用默认信息窗体框样式，显示信息内容
             content: createInfoWindow("录入学校信息", info.join(""))
         });
+        document.getElementById("j")
 
         infoWindow.open(map, lnglats);
-
     }
 
 
@@ -312,11 +309,12 @@
         var j = lnglat[0]
         var w = lnglat[1]
         var str = [];
+
         //str.push('定位结果：' + data.position);
         str.push('<div style="font-size: 15px"> 经度：<span id="j">' + j+"</span></div>");
         str.push('<div style="font-size: 15px"> 纬度：<span id="w">' + w+"</span></div>");
         //str.push('定位类别：' + data.location_type);
-        str.push("<div style=\"font-size: 15px\"> 学校名称：<div><input id='mc' /></div></div>");
+        str.push("<div style=\"font-size: 15px\"> 学校名称：<span id=\"mc\">" + schoolMes.realName+"</span></div>");
         if (data.accuracy) {
          //   str.push('精度：' + data.accuracy + ' 米');
         }//如为IP精确定位结果则没有精度信息

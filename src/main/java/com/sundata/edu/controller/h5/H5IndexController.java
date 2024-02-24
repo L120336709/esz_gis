@@ -58,6 +58,8 @@ public class H5IndexController extends BaseController{
         return view;
     }
 
+
+
     @GetMapping(value = "/h5/search")
     public String search() {
         return prefix+"/search";
@@ -83,9 +85,17 @@ public class H5IndexController extends BaseController{
         return view;
     }
 
+
+
     @GetMapping(value = "/h5/echarts")
-    public ModelAndView echarts(HttpServletRequest request) {
+    public ModelAndView echarts(HttpServletRequest request,String accessToken, ModelMap map) {
+        accessToken=iTokenService.getWebTokenByAppToken(accessToken).getData();
         boolean isMoblie = PcUtils.JudgeIsMoblie(request);
+        if(StringUtils.isBlank(accessToken)) {
+            return new ModelAndView(prefix + "/error");
+        }
+        rpcLoginService.login(accessToken);
+
         if(isMoblie){
             ModelAndView view = new ModelAndView( "/h5/echartsh5");
             return view;
@@ -104,4 +114,12 @@ public class H5IndexController extends BaseController{
         ModelAndView view = new ModelAndView( "/h5/phone2024");
         return view;
     }
+
+
+    @GetMapping(value = "/h5/dwjw2024")
+    public ModelAndView dwjw2024() {
+        ModelAndView view = new ModelAndView( "/h5/dwjw2024");
+        return view;
+    }
+
 }

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundata.edu.dao.SchoolgisMapper">
+    
+    <resultMap type="Schoolgis" id="SchoolgisResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="value"    column="value"    />
+        <result property="bianhao"    column="bianhao"    />
+        <result property="schooltype"    column="schooltype"    />
+        <result property="bsc"    column="bsc"    />
+        <result property="jyj"    column="jyj"    />
+        <result property="people"    column="people"    />
+        <result property="phone"    column="phone"    />
+        <result property="coord"    column="coord"    />
+        <result property="address"    column="address"    />
+        <result property="picture"    column="picture"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="createpeople"    column="createpeople"    />
+        <result property="updatetime"    column="updatetime"    />
+        <result property="updatepeople"    column="updatepeople"    />
+    </resultMap>
+
+    <sql id="selectSchoolgisVo">
+        select id, name, value, bianhao, schooltype, bsc, jyj, people, phone, coord, address, picture, createtime, createpeople, updatetime, updatepeople from schoolgis
+    </sql>
+
+    <select id="selectSchoolgisList" parameterType="Schoolgis" resultMap="SchoolgisResult">
+        <include refid="selectSchoolgisVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="value != null  and value != ''"> and value = #{value}</if>
+            <if test="bianhao != null  and bianhao != ''"> and bianhao = #{bianhao}</if>
+            <if test="schooltype != null  and schooltype != ''"> and schooltype = #{schooltype}</if>
+            <if test="bsc != null  and bsc != ''"> and bsc = #{bsc}</if>
+            <if test="jyj != null  and jyj != ''"> and jyj = #{jyj}</if>
+            <if test="people != null  and people != ''"> and people = #{people}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="coord != null  and coord != ''"> and coord = #{coord}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="picture != null  and picture != ''"> and picture = #{picture}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="createpeople != null  and createpeople != ''"> and createpeople = #{createpeople}</if>
+            <if test="updatetime != null "> and updatetime = #{updatetime}</if>
+            <if test="updatepeople != null  and updatepeople != ''"> and updatepeople = #{updatepeople}</if>
+        </where>
+    </select>
+
+
+    <select id="selectSchoolgisById" parameterType="Long" resultMap="SchoolgisResult">
+        <include refid="selectSchoolgisVo"/>
+        where id = #{id}
+    </select>
+
+    <!--批量查找数据 -->
+    <select id="findSelectSchoolgis" parameterType="java.util.ArrayList" resultMap="SchoolgisResult">
+        <include refid="selectSchoolgisVo"/>
+        <where>
+            name in (
+            <foreach collection="list"  item="name" index="index" separator=",">
+                #{name}
+            </foreach>
+            )
+        </where>
+    </select>
+
+    <!--批量插入数据 -->
+    <insert id="insertSchoolgisList"  >
+        insert into schoolgis (name, value, bianhao, schooltype, bsc, jyj, people, phone,
+         coord, address, picture, createtime, createpeople, updatetime, updatepeople)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name}, #{item.value}, #{item.bianhao}, #{item.schooltype}, #{item.bsc},
+             #{item.jyj}, #{item.people}, #{item.phone},
+            #{item.coord}, #{item.address}, #{item.picture}, #{item.createtime}, #{item.createpeople},
+            #{item.updatetime}, #{item.updatepeople})
+          </foreach>
+    </insert>
+
+
+    <!--批量更新数据 -->
+    <update id="updateSchoolgisList" parameterType="java.util.List">
+        update schoolgis set
+        name =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.name,jdbcType=VARCHAR}
+        </foreach>
+        ,value =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.value,jdbcType=VARCHAR}
+        </foreach>
+        ,bianhao =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.bianhao,jdbcType=VARCHAR}
+        </foreach>
+        ,schooltype =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.schooltype,jdbcType=VARCHAR}
+        </foreach>
+        ,bsc =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.bsc,jdbcType=VARCHAR}
+        </foreach>
+
+
+
+
+        ,jyj =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.jyj,jdbcType=VARCHAR}
+        </foreach>
+        ,people =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.people,jdbcType=VARCHAR}
+        </foreach>
+        ,phone =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.phone,jdbcType=VARCHAR}
+        </foreach>
+        ,coord =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.coord,jdbcType=VARCHAR}
+        </foreach>
+        ,address =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.address,jdbcType=VARCHAR}
+        </foreach>
+        ,picture =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.picture,jdbcType=VARCHAR}
+        </foreach>
+        ,createtime =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.createtime,jdbcType=VARCHAR}
+        </foreach>
+        ,createpeople =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.createpeople,jdbcType=VARCHAR}
+        </foreach>
+        ,updatetime =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.updatetime,jdbcType=VARCHAR}
+        </foreach>
+        ,updatepeople =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id,jdbcType=DECIMAL} then #{item.updatepeople,jdbcType=VARCHAR}
+        </foreach>
+
+        where id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.id,jdbcType=DECIMAL}
+        </foreach>
+    </update>
+
+
+
+    <insert id="insertSchoolgis" parameterType="Schoolgis" useGeneratedKeys="true" keyProperty="id">
+        insert into schoolgis
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="value != null">value,</if>
+            <if test="bianhao != null">bianhao,</if>
+            <if test="schooltype != null">schooltype,</if>
+            <if test="bsc != null">bsc,</if>
+            <if test="jyj != null">jyj,</if>
+            <if test="people != null">people,</if>
+            <if test="phone != null">phone,</if>
+            <if test="coord != null">coord,</if>
+            <if test="address != null">address,</if>
+            <if test="picture != null">picture,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="createpeople != null">createpeople,</if>
+            <if test="updatetime != null">updatetime,</if>
+            <if test="updatepeople != null">updatepeople,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="value != null">#{value},</if>
+            <if test="bianhao != null">#{bianhao},</if>
+            <if test="schooltype != null">#{schooltype},</if>
+            <if test="bsc != null">#{bsc},</if>
+            <if test="jyj != null">#{jyj},</if>
+            <if test="people != null">#{people},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="coord != null">#{coord},</if>
+            <if test="address != null">#{address},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="createpeople != null">#{createpeople},</if>
+            <if test="updatetime != null">#{updatetime},</if>
+            <if test="updatepeople != null">#{updatepeople},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSchoolgis" parameterType="Schoolgis">
+        update schoolgis
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="value != null">value = #{value},</if>
+            <if test="bianhao != null">bianhao = #{bianhao},</if>
+            <if test="schooltype != null">schooltype = #{schooltype},</if>
+            <if test="bsc != null">bsc = #{bsc},</if>
+            <if test="jyj != null">jyj = #{jyj},</if>
+            <if test="people != null">people = #{people},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="coord != null">coord = #{coord},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="picture != null">picture = #{picture},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="createpeople != null">createpeople = #{createpeople},</if>
+            <if test="updatetime != null">updatetime = #{updatetime},</if>
+            <if test="updatepeople != null">updatepeople = #{updatepeople},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSchoolgisById" parameterType="Long">
+        delete from schoolgis where id = #{id}
+    </delete>
+
+    <delete id="deleteSchoolgisByIds" parameterType="String">
+        delete from schoolgis where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

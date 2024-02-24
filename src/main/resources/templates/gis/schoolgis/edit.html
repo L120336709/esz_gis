@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改学校信息表')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-schoolgis-edit" th:object="${schoolgis}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">单位名称：</label>
+                <div class="col-sm-8">
+                    <input name="name" th:field="*{name}" class="form-control" type="text">
+                </div>
+            </div>
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">单位编号：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="bianhao" th:field="*{bianhao}" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">学校类型：</label>
+                <div class="col-sm-8">
+                    <input name="schooltype" th:field="*{schooltype}" class="form-control" type="text">
+                </div>
+            </div>
+
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">所属乡镇：</label>
+                <div class="col-sm-8">
+                    <input name="bsc" th:field="*{bsc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">所属教育局：</label>
+                <div class="col-sm-8">
+                    <input name="jyj" th:field="*{jyj}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">联系人：</label>
+                <div class="col-sm-8">
+                    <input name="people" th:field="*{people}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">联系电话：</label>
+                <div class="col-sm-8">
+                    <input name="phone" th:field="*{phone}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">经纬度：</label>
+                <div class="col-sm-8">
+                    <input name="coord" th:field="*{coord}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">单位地址：</label>
+                <div class="col-sm-8">
+                    <input name="address" th:field="*{address}" class="form-control" type="text">
+                </div>
+            </div>
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">学校图片：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="picture" th:field="*{picture}" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">创建人：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="createpeople" th:field="*{createpeople}" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">更新人：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="updatepeople" th:field="*{updatepeople}" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "gis/schoolgis";
+        $("#form-schoolgis-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-schoolgis-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

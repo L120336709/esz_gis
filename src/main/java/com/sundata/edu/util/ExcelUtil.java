@@ -805,6 +805,7 @@ public class ExcelUtil<T>
             {
                 for (String value : propertyValue.split(separator))
                 {
+                    System.err.println(itemArray[1]+"_"+value);
                     if (itemArray[1].equals(value))
                     {
                         propertyString.append(itemArray[0] + separator);

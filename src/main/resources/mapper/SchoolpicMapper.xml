@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundata.edu.dao.SchoolpicMapper">
+    
+    <resultMap type="Schoolpic" id="SchoolpicResult">
+        <result property="id"    column="id"    />
+        <result property="picname"    column="picname"    />
+        <result property="picadd"    column="picadd"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="createpeople"    column="createpeople"    />
+    </resultMap>
+
+    <sql id="selectSchoolpicVo">
+        select id, picname, picadd, createtime, createpeople from schoolpic
+    </sql>
+
+    <select id="selectSchoolpicList" parameterType="Schoolpic" resultMap="SchoolpicResult">
+        <include refid="selectSchoolpicVo"/>
+        <where>  
+            <if test="picname != null  and picname != ''"> and picname like concat('%', #{picname}, '%')</if>
+            <if test="picadd != null  and picadd != ''"> and picadd = #{picadd}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="createpeople != null  and createpeople != ''"> and createpeople = #{createpeople}</if>
+        </where>
+    </select>
+    
+    <select id="selectSchoolpicById" parameterType="Long" resultMap="SchoolpicResult">
+        <include refid="selectSchoolpicVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSchoolpic" parameterType="Schoolpic" useGeneratedKeys="true" keyProperty="id">
+        insert into schoolpic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="picname != null">picname,</if>
+            <if test="picadd != null">picadd,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="createpeople != null">createpeople,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="picname != null">#{picname},</if>
+            <if test="picadd != null">#{picadd},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="createpeople != null">#{createpeople},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSchoolpic" parameterType="Schoolpic">
+        update schoolpic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="picname != null">picname = #{picname},</if>
+            <if test="picadd != null">picadd = #{picadd},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="createpeople != null">createpeople = #{createpeople},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSchoolpicById" parameterType="Long">
+        delete from schoolpic where id = #{id}
+    </delete>
+
+    <delete id="deleteSchoolpicByIds" parameterType="String">
+        delete from schoolpic where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
