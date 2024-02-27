@@ -219,6 +219,12 @@
             padding-left: 5px;
             float: left;
         }
+
+        .demo-class {
+            background-color: transparent !important;
+            background-color: rgba(255, 255, 255, 0.7) !important;
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -319,14 +325,12 @@
     <div class="title01" id="title03">恩施州教育局大数据</div>
     <div class="title04"><input id="schoolname" placeholder="请输入学校名称关键字查询">
         <button onclick="searchSchool()">搜索</button>
-<!--                        <button>搜索</button>-->
+        <!--                        <button>搜索</button>-->
     </div>
-    <div class="title05 tutlebutton">
+    <div class="title05 tutlebutton" id="jyjnow">
         <button style="height: 35px;width: auto">恩施州教育局</button>
     </div>
     <div id="schoollist">
-
-
         <div class="title05 tutlebutton">
             <div>
                 <button>恩施市教育局</button>
@@ -359,11 +363,11 @@
                 <button>鹤峰县教育局</button>
             </div>
         </div>
-        <div class="title05 tutlebutton">
-            <div>
-                <button style="padding: 5px 16px;">恩施州高级中学</button>
-            </div>
-        </div>
+        <!--        <div class="title05 tutlebutton">-->
+        <!--            <div>-->
+        <!--                <button style="padding: 5px 16px;">恩施州高级中学</button>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </div>
 
@@ -371,10 +375,11 @@
 <script src="/js/common.js"></script>
 
 <script src="/js/json/echarts-all.min.js?v=20240222"></script>
-<script src="/js/json/gis.js?v=2024022201"></script>
+<script src="/js/json/gis.js?v=202402224"></script>
 <script type="text/javascript">
 
     var schoollistAll = null
+    var jyjList = null
     var schoollistnow = new Array()
     var schoolSeacrchList = new Array()
     var pagenow = 1
@@ -432,7 +437,7 @@
     function schoolTypeNUll() {
         var checkboxes = document.querySelectorAll('input[type="checkbox"]'); // 获取所有类型为checkbox的元素
         for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked=false
+            checkboxes[i].checked = false
         }
     }
 
@@ -512,36 +517,37 @@
     //弹框显示学校名称、地点、图片信息等
     function show(i, j) {
 
-        var name , address , bsc , coord, picturelist,id
-        var picture="<div style='padding:5px 0 0 10px' id='xxtp'>学校图片（学校账号可上传）：</div>"
+
+        var name, address, bsc, coord, picturelist, id
+        var picture = "<div style='padding:5px 0 0 10px' id='xxtp'>单位展示照：</div>"
         if (j == 1) {
             name = schoollistnow[i].name
             address = schoollistnow[i].address
             bsc = schoollistnow[i].bsc
             coord = schoollistnow[i].coord
-            picturelist=schoollistnow[i].picture
-            id=schoollistnow[i].id
+            picturelist = schoollistnow[i].picture
+            id = schoollistnow[i].id
         } else {
             name = schoollistAll[i].name
             address = schoollistAll[i].address
             bsc = schoollistAll[i].bsc
             coord = schoollistAll[i].coord
-            picturelist=schoollistAll[i].picture
-            id=schoollistAll[i].id
+            picturelist = schoollistAll[i].picture
+            id = schoollistAll[i].id
         }
-        var pictures=[0,0]
-        if(picturelist!=null){
-            pictures=picturelist.split(",")
-            if(schoolMes!=null) {
+        toSchGis(name, 1)
+        var pictures = [0, 0]
+        if (picturelist != null) {
+            pictures = picturelist.split(",")
+            if (schoolMes != null) {
                 if (schoolMes.realName != name) {
-                    for(var p=0;p<pictures.length;p++){
-                        if(pictures[p]!=0){
-                            picture=picture  + "<div><img style='width: 200px;height: 100px;padding: 5px' src='"+pictures[p]+"'></div>"
+                    for (var p = 0; p < pictures.length; p++) {
+                        if (pictures[p] != 0) {
+                            picture = picture + "<div><img style='width: 200px;height: 100px;padding: 5px' src='" + pictures[p] + "'></div>"
                         }
                     }
                 }
             }
-
         }
 
 
@@ -553,16 +559,14 @@
             content: "<div style='padding:5px 0 0 10px'> <div>单位名称：" + name + "</div>"
                 + "<div>单位地点：" + address + "</div>"
                 + "<div>所属乡镇：" + bsc + "</div>"
-                + "<div>经纬度：" +coord +"</div>"
+                + "<div>经纬度：" + coord + "</div>"
                 + "<div>导航：（使用手机版本进行导航）</div></div>"
                 + picture,
-            success: function(){
-
-                if(schoolMes!=null) {
+            success: function () {
+                if (schoolMes != null) {
                     if (schoolMes.realName == name) {
-
                         //if(picturelist==null){
-                            settp(id,"xxtp","学校图片",pictures[0],pictures[1])
+                        settp(id, "xxtp", "单位展示照", pictures[0], pictures[1])
                         //}
 
                     }
@@ -786,6 +790,24 @@
         return bh
     }
 
+    function showJyj(s) {
+        var name=jyjList[s].name
+        var address=jyjList[s].address
+        layer.open({
+            skin: 'demo-class',
+            type: 1,
+            closeBtn: 0,
+            area: ['350px', '200px'],
+            content: "<div style='padding:5px 0 0 10px'> <div>单位名称：" + name + "</div>"
+                + "<div>单位地点：" + address + "</div>"
+                + "</div>" ,
+            btn: ['关闭'],
+            btn1: function (index) {
+                layer.close(index)
+            }
+        });
+    }
+
     function getDitu(json, jyjname, xiangzhenName, schoolname, schoolType, jbh) {
         getditus[0] = json
         getditus[1] = jyjname
@@ -798,7 +820,7 @@
         }
         document.getElementById("jbh").innerHTML = "仅名称"
 
-        if (schoolType == null ) {
+        if (schoolType == null) {
             schoolTypeNUll()
         }
 
@@ -816,16 +838,22 @@
         document.getElementById("btns").style.height = '50px'
 
         var ss
-        $.ajax({
-            async: false,
-            url: "/js/json/package.json?v=20240219",//同文件夹下的json文件路径
-            type: "GET",//请求方式为get
-            dataType: "json", //返回数据格式为json
-            success: function (data) {//请求成功完成后要执行的方法
-                //console.log(data);
-                ss = data
-            }
-        })
+        if (jyjList != null) {
+            ss = jyjList
+        } else {
+            $.ajax({
+                async: false,
+                url: "/js/json/package.json?v=20240227",//同文件夹下的json文件路径
+                type: "GET",//请求方式为get
+                dataType: "json", //返回数据格式为json
+                success: function (data) {//请求成功完成后要执行的方法
+                    //console.log(data);
+                    ss = data
+                    jyjList = data
+                }
+            })
+        }
+
         var school
 
         if (schoollistAll != null) {
@@ -841,10 +869,10 @@
                     var sch = new Array()
                     for (var i = 0; i < data.length; i++) {
                         // if (data[i].schooltype != "幼儿园") {// 隐藏幼儿园
-                        var coord=data[i].coord.split(",")
-                        data[i].coord=[parseFloat(coord[0]),parseFloat(coord[1])]
+                        var coord = data[i].coord.split(",")
+                        data[i].coord = [parseFloat(coord[0]), parseFloat(coord[1])]
                         sch.push(data[i])
-                         //}
+                        //}
                     }
                     school = sch
                     schoollistAll = sch
@@ -998,44 +1026,23 @@
                         symbolSize: 30,
                         data: ss
                     };
-                    document.getElementById("schoollist").innerHTML = "\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button>恩施市教育局</button>\n" +
-                        "            </div>\n" +
-                        "            <div>\n" +
-                        "                <button>利川市教育局</button>\n" +
-                        "            </div>\n" +
-                        "        </div>\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button>建始县教育局</button>\n" +
-                        "            </div>\n" +
-                        "            <div>\n" +
-                        "                <button>巴东县教育局</button>\n" +
-                        "            </div>\n" +
-                        "        </div>\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button>宣恩县教育局</button>\n" +
-                        "            </div>\n" +
-                        "            <div>\n" +
-                        "                <button>咸丰县教育局</button>\n" +
-                        "            </div>\n" +
-                        "        </div>\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button>来凤县教育局</button>\n" +
-                        "            </div>\n" +
-                        "            <div>\n" +
-                        "                <button>鹤峰县教育局</button>\n" +
-                        "            </div>\n" +
-                        "        </div>\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button style=\"padding: 5px 16px;\">恩施州高级中学</button>\n" +
-                        "            </div>\n" +
-                        "        </div>"
+
+                    var schoollistinner=""
+                    for (var s = 0; s < jyjList.length; s=s+1) {
+                        if(jyjList[s].name!="恩施州教育局"){
+                            schoollistinner=schoollistinner+"<div class=\"title05 tutlebutton\">\n" +
+                            "            <div>" +
+                            "                <button onclick='showJyj("+s+")'>"+jyjList[s].name+"</button>" +
+                            "            </div>" +
+                            "            <div>" +
+                            "                <button  onclick='showJyj("+(s+1)+")'>"+jyjList[s+1].name+"</button>" +
+                            "            </div>" +
+                            "        </div>"
+                            s=s+1
+                        }
+                    }
+                    document.getElementById("schoollist").innerHTML = schoollistinner
+                    document.getElementById("jyjnow").innerHTML = " <button style=\"height: 35px;width: auto\" onclick='showJyj(0)'>恩施州教育局</button>"
                     schooltjlist(0, school)
 
 
@@ -1060,7 +1067,7 @@
                             } else if (xp < 10000) {
                                 pvalue = bh + xp
                             }
-                            pvalue=""+xp
+                            pvalue = "" + xp
                             schoollistAll[p].value = pvalue
                             school[p].value = pvalue
                         }
@@ -1127,7 +1134,11 @@
                     } else {
                         option.series[0].markPoint = {label: {fontSize: labelsize}, symbolSize: 12, data: xzmarkPoint}
                         if (jbh != null) {
-                            option.series[0].markPoint = { label: {fontSize: labelsize,formatter: '{b}'}, symbolSize: 12, data: xzmarkPoint}
+                            option.series[0].markPoint = {
+                                label: {fontSize: labelsize, formatter: '{b}'},
+                                symbolSize: 12,
+                                data: xzmarkPoint
+                            }
                         }
 
                     }
@@ -1135,6 +1146,13 @@
                 } else {
                     zz = 1
                     if (jyjname != null) {
+                        for(var s=0;s<jyjList.length;s++){
+                            if(jyjList[s].name==jyjname+"教育局"){
+                                document.getElementById("jyjnow").innerHTML =
+                                    " <button style=\"height: 35px;width: auto\" onclick='showJyj("+s+")'>"+jyjname+"教育局</button>"
+                            }
+                        }
+
                         if (xiangzhenName != null) {
                             var xzmarkPoint = new Array()
                             var xp = 1;
@@ -1174,40 +1192,49 @@
                                     // school[p].label={}
                                     // school[p].itemStyle={}
 
+                                    if (schoolname != "" && schoolname != null) {
 
-                                    if (school[p].value == schoolname||school[p].name == schoolname) {
-                                        school[p].symbolSize=80
-                                        school[p].label={fontSize: 20,color:"red"}
-                                        school[p].itemStyle={color:"yellow"}
-                                        //
-                                        //     if (xp < 10) {
-                                        //         school[p].value = bh + "00" + xp
-                                        //     } else if (xp < 100) {
-                                        //         school[p].value = bh + "0" + xp
-                                        //     } else if (xp < 1000) {
-                                        //         school[p].value = bh + xp
-                                        //     }
-                                    }
-
-                                    if (schoolType != null && schoolType != "") {
-                                        for (var s = 0; s < schoolType.length; s++) {
-                                            if (school[p].schooltype == schoolType[s]) {
-                                                xzmarkPoint.push(school[p])
-                                            }
+                                        if (school[p].value == schoolname || school[p].name == schoolname) {
+                                            // school[p].symbolSize = 80
+                                            // school[p].label = {fontSize: 20, color: "red"}
+                                            // school[p].itemStyle = {color: "yellow"}
+                                            //
+                                            //     if (xp < 10) {
+                                            //         school[p].value = bh + "00" + xp
+                                            //     } else if (xp < 100) {
+                                            //         school[p].value = bh + "0" + xp
+                                            //     } else if (xp < 1000) {
+                                            //         school[p].value = bh + xp
+                                            //     }
+                                            xzmarkPoint.push(school[p])
                                         }
-
-                                        // if(school[p].schooltype==schoolType){
-                                        //     xzmarkPoint.push(school[p])
-                                        // }
                                     } else {
-                                        xzmarkPoint.push(school[p])
+
+                                        if (schoolType != null && schoolType != "") {
+                                            for (var s = 0; s < schoolType.length; s++) {
+                                                if (school[p].schooltype == schoolType[s]) {
+                                                    xzmarkPoint.push(school[p])
+                                                }
+                                            }
+
+                                            // if(school[p].schooltype==schoolType){
+                                            //     xzmarkPoint.push(school[p])
+                                            // }
+                                        } else {
+                                            xzmarkPoint.push(school[p])
+                                        }
                                     }
+
                                     xp++
                                 }
                             }
-                            option.series[0].markPoint = { data: xzmarkPoint}
-                            if (jbh != null){
-                                option.series[0].markPoint = { label: {formatter: '{b}'},data: xzmarkPoint}
+                            option.series[0].markPoint = {label: {fontSize: labelsize}, symbolSize: 12, data: xzmarkPoint}
+                            if (jbh != null) {
+                                option.series[0].markPoint = {
+                                    label: {formatter: '{b}', fontSize: labelsize},
+                                    symbolSize: 12,
+                                    data: xzmarkPoint
+                                }
                             }
 
                         } else {
@@ -1215,7 +1242,7 @@
                             var xp = 1;
                             var bh = ""//getBh(jyjname)
 
-                            var labelsize =3
+                            var labelsize = 3
                             for (var p = 0; p < school.length; p++) {
 
                                 if (school[p].jyj == jyjname + "教育局") {
@@ -1274,8 +1301,12 @@
                             }
 
                             option.series[0].markPoint = {label: {fontSize: labelsize}, symbolSize: 12, data: xzmarkPoint}
-                            if (jbh != null){
-                                option.series[0].markPoint = { label: {fontSize: labelsize,formatter: '{b}'} , symbolSize: 12, data: xzmarkPoint}
+                            if (jbh != null) {
+                                option.series[0].markPoint = {
+                                    label: {fontSize: labelsize, formatter: '{b}'},
+                                    symbolSize: 12,
+                                    data: xzmarkPoint
+                                }
                             }
                         }
 
@@ -1434,11 +1465,13 @@
                             fontSize = 12;
                             option.series[0].label.show = false;
                         }
-                        if(xiangzhenName==null) {
-                            option.series[0].markPoint.label.fontSize=cengshu + 1
-                            option.series[0].markPoint.symbolSize=cengshu+10
-                            option.series[0].label.fontSize = fontSize;
-                        }
+
+                        //if (xiangzhenName == null) {
+                        option.series[0].markPoint.label.fontSize = cengshu + 1
+                        option.series[0].markPoint.symbolSize = cengshu + 10
+                        option.series[0].label.fontSize = fontSize;
+                        // }
+
                         chart.clear()
                         chart.setOption(option);
                         //console.log(option.series[0].label.fontSize)
@@ -1661,9 +1694,6 @@
             searchPageTo(1)
         }
     }
-
-
-
 
 
 </script>

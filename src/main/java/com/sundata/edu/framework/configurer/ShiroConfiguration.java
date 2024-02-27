@@ -222,6 +222,7 @@ public class ShiroConfiguration {
         //电子工作证检验页面
         filterChainDefinitionMap.put("/h5/index/**", "anon");
         filterChainDefinitionMap.put("/h5/echarts", "anon");
+        filterChainDefinitionMap.put("/h5/echartsh5", "anon");
         filterChainDefinitionMap.put("/h5/phone2023", "anon");
         filterChainDefinitionMap.put("/h5/phone2024", "anon");
 

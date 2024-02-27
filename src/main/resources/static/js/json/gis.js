@@ -146,7 +146,7 @@ function settp(renwuId,xid, xname,img01,img02) {
     }
     var ptop = "38px"
     var xi = 0;
-    document.getElementById(xid).innerHTML = "   <div >" + xname + "（可上传）：<button onclick='savePic(\""+renwuId+"\")'" +
+    document.getElementById(xid).innerHTML = "   <div >" + xname + "：<button onclick='savePic(\""+renwuId+"\")'" +
         "style='background-color: #00B4AA;color: white;border:none;border-radius: 5px'>提交更新图片</button></div>\n" +
         "                    <div >\n" +
         "                        <div style=\"width: 80%; \">\n" +
@@ -197,4 +197,46 @@ function savePic(gisId) {
         }
     })
 
+}
+
+
+
+function toSchGis(name,type) {
+    var chart = echarts.init(document.getElementById('id1'));
+    var option=chart.getOption()
+    var data= option.series[0].markPoint.data
+    for(var i=0;i<data.length;i++){
+        delete option.series[0].markPoint.data[i].itemStyle
+        delete option.series[0].markPoint.data[i].label.color
+        if(type==2){
+            delete option.series[0].markPoint.data[i].label
+        }
+        if(name==data[i].name){
+            option.series[0].markPoint.data[i].itemStyle={color:"#178535"}
+            //option.series[0].markPoint.data[i].label.color="red"
+
+            if(type==2){
+                option.series[0].markPoint.data[i].label={
+                    formatter: function (params) {
+                        return '{a|' + params.name + '}'; // 返回第三列值作为标记点的文本内容
+                    },
+                    rich: {
+                        a: {
+                            color:"white",
+                            fontWeight: 'bold',
+                            textBorderColor: '#178535', // 设置描边颜色为白色
+                            textBorderWidth: 3, // 设置描边线宽度
+                            shadowBlur: 8, // 设置阴影模糊程度
+                            shadowOffsetX: 2, // 设置水平阴影位移量
+                            shadowOffsetY: 2, // 设置垂直阴影位移量
+                            shadowColor: 'rgba(0, 0, 0, 0.4)' // 设置阴影颜色及透明度
+                        }
+                    }
+                    ,fontSize:5
+                }
+            }
+        }
+    }
+    chart.clear()
+    chart.setOption(option)
 }

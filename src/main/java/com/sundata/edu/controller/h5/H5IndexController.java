@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -88,7 +89,16 @@ public class H5IndexController extends BaseController{
 
 
     @GetMapping(value = "/h5/echarts")
-    public ModelAndView echarts(HttpServletRequest request,String accessToken, ModelMap map) {
+    public ModelAndView echarts(HttpServletRequest request,String accessToken, ModelMap map) throws UnsupportedEncodingException {
+
+        byte[] aa = "恩施市博文学校".getBytes("utf-8");
+        for(int i=0; i<aa.length;i++)
+        {
+
+            System.out.print(String.format("%02x",aa[i]).toUpperCase());
+        }
+        System.err.println("===");
+
         accessToken=iTokenService.getWebTokenByAppToken(accessToken).getData();
         boolean isMoblie = PcUtils.JudgeIsMoblie(request);
         if(StringUtils.isBlank(accessToken)) {
@@ -102,6 +112,19 @@ public class H5IndexController extends BaseController{
         }
         ModelAndView view = new ModelAndView( "/h5/echarts");
         return view;
+    }
+
+
+    @GetMapping(value = "/h5/echartsh5")
+    public ModelAndView echartsh5(HttpServletRequest request,String accessToken, ModelMap map) {
+        accessToken=iTokenService.getWebTokenByAppToken(accessToken).getData();
+        if(StringUtils.isBlank(accessToken)) {
+            return new ModelAndView(prefix + "/error");
+        }
+        rpcLoginService.login(accessToken);
+        map.put("h5","h5");
+            ModelAndView view = new ModelAndView( "/h5/echartsh5",map);
+            return view;
     }
 
     @GetMapping(value = "/h5/phone2023")

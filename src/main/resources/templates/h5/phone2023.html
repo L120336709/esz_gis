@@ -18,6 +18,7 @@
 </head>
 <body>
 <div id="container"></div>
+<div id="my-panel"></div>
 <div class="info">
     <h4 id="status"></h4>
     <hr>
@@ -76,17 +77,43 @@
                 //result中包含浏览器ip地址等信息
                 geolocation.getCurrentPosition(function (status, result) {
                     if (status == 'complete') {
-                        onComplete(result, r.point.lng, r.point.lat)
+                        //onComplete(result, r.point.lng, r.point.lat)
                     } else {
                         onError(result)
                     }
                 });
             });
+
+            AMap.plugin(["AMap.Driving"], function () {
+                var driving = new AMap.Driving({
+                    map: map,
+                    panel: "my-panel",
+                });
+                var startLngLat = [109.493542 ,30.308595] //起始点坐标
+                var endLngLat = [110.059335, 30.651325] //终点坐标
+
+                //获取起终点规划线路
+                driving.search(startLngLat, endLngLat, function (status, result) {
+                    if (status === "complete") {
+                        //status：complete 表示查询成功，no_data 为查询无结果，error 代表查询错误
+                        //查询成功时，result 即为对应的驾车导航信息
+                        alert().log(result);
+                    } else {
+                        console.log("获取驾车数据失败：" + result);
+                    }
+                });
+            });
+
             //alert('您的位置：' + r.point.lng + ',' + r.point.lat);
         } else {
             alert('failed' + this.getStatus());
         }
     });
+
+
+
+    //引入和创建驾车规划插件
+
 
     //解析定位结果
     function onComplete(data, lng, lat) {

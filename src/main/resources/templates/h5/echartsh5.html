@@ -51,12 +51,12 @@
 
 
         .btnsbutton {
-            padding: 5px;
+            /*padding: 5px;*/
             background-color: rgba(0, 0, 0, 0);
             border-radius: 5px;
             color: white;
-            width: 60px;
-            margin-right: 10px;
+            width: 50px;
+            margin-right: 5px;
             text-align: center;
             cursor: pointer;
             float: left;
@@ -231,6 +231,12 @@
             padding-left: 5px;
             float: left;
         }
+
+        .demo-class {
+            background-color: transparent !important;
+            background-color: rgba(255, 255, 255, 0.7) !important;
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -247,12 +253,12 @@
 
 
     <button id="bt0" class="btnsbutton btnsbuttonon" onclick="changes(0)" style="cursor: pointer;margin-left: 10px">
-        GIS地图
+        GIS
     </button>
     <button id="bt1" class="btnsbutton" onclick="changes(1)">概况</button>
     <button id="bt2" class="btnsbutton" onclick="changes(2)">列表</button>
 
-    <button id="jbh" class="btnsbutton" onclick="setjbh(1)">仅名称</button>
+    <button id="jbh" class="btnsbutton" onclick="setjbh(1)">名称</button>
     <button id="back" class="btnsbutton" onclick="getDitu('/js/json/enshizhou.json')">返回</button>
 
     <div id="gis03" style="width: 140px;margin-left: calc(35% - 290px)" hidden>列表信息窗</div>
@@ -310,7 +316,7 @@
         <p><input type="checkbox" name="schooltypes" title="中职" value="中职"/>中职 </p>
         <p><input type="checkbox" name="schooltypes" title="特教学校" value="特教学校"/>特教 </p>
         <p><input type="checkbox" name="schooltypes" title="高级中学" value="高级中学"/>高 </p>
-        <p><input type="checkbox" name="schooltypes" title="高职或大学" value="高职或大学"/>高&大 </p>
+        <p><input type="checkbox" name="schooltypes" title="高职或大学" value="高职或大学"/>大 </p>
         <p><input type="checkbox" name="schooltypes" title="九年一贯制" value="九年一贯制"/>九 </p>
         <p><input type="checkbox" name="schooltypes" title="十二年一贯制" value="十二年一贯制"/>十二</p>
     </div>
@@ -324,7 +330,7 @@
         <button onclick="searchSchool()">搜索</button>
         <!--        <button>搜索</button>-->
     </div>
-    <div class="title05 tutlebutton">
+    <div class="title05 tutlebutton" id="jyjnow">
         <button style="height: 35px;width: auto">恩施州教育局</button>
     </div>
     <div id="schoollist">
@@ -362,20 +368,21 @@
                 <button>鹤峰县教育局</button>
             </div>
         </div>
-        <div class="title05 tutlebutton">
-            <div>
-                <button style="padding: 5px 16px;">恩施州高级中学</button>
-            </div>
-        </div>
+        <!--        <div class="title05 tutlebutton">-->
+        <!--            <div>-->
+        <!--                <button style="padding: 5px 16px;">恩施州高级中学</button>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </div>
 
+<div th:text="${h5}" id="h5" hidden></div>
 <script src="/js/mmlib.min.js"></script>
 <script src="/js/common.js"></script>
 <script src="/js/json/new/echarts-all.min.js?v=20240221"></script>
-<script src="/js/json/gis.js?v=20240223"></script>
+<script src="/js/json/gis.js?v=202402224"></script>
 <script type="text/javascript">
-
+    var jyjList = null
     var schoollistAll = null
     var schoollistnow = new Array()
     var schoolSeacrchList = new Array()
@@ -412,13 +419,13 @@
             document.getElementById("jbh").onclick = function (ev) {
                 setjbh(0)
             }
-            document.getElementById("jbh").innerHTML = "仅名称"
+            document.getElementById("jbh").innerHTML = "名称"
         } else {
             getDitu(getditus[0], getditus[1], getditus[2], getditus[3], getditus[4], 1)
             document.getElementById("jbh").onclick = function (ev) {
                 setjbh(null)
             }
-            document.getElementById("jbh").innerHTML = "仅编号"
+            document.getElementById("jbh").innerHTML = "编号"
         }
     }
 
@@ -492,50 +499,82 @@
     }
 
 
-    function toDh(j, w, name) {
-        location.href = "https://uri.amap.com/marker?position=" + j + "," + w + "&name=" + name
+    function touch(dz) {
+        var node = document.createElement('textarea');
+        node.value = dz;
+        node.setAttribute('readOnly', 'readOnly');
+        node.setAttribute('style', "position: fixed; left: 0; top: 0;opacity: 0;");
+        document.getElementsByTagName('body')[0].appendChild(node);
+        setTimeout(function () {
+            node.focus();
+            node.setSelectionRange(0, node.value.length);
+            try {
+                document.execCommand('copy', true);
+                alert("导航信息已复制，请打开手机浏览器，粘贴路径后访问！");
+            } catch (e) {
+                alert("导航信息复制失败！");
+            }
+            node.parentNode.removeChild(node);
+        }, 0);
     }
 
-    function toJW(id){
+
+
+
+
+    function toDh(j, w, name) {
+        var h5 = document.getElementById("h5").innerText
+        if (h5 != "") {
+            name = encodeURIComponent(name);
+            touch("https://m.amap.com/share/index/lnglat=" + j + "," + w + "&name=" + name + "&src=uriapi&innersrc=uriapi")
+        } else {
+            //location.href =  "https://m.amap.com/share/index/lnglat="+j+ "," + w+"&name="+name+"&src=uriapi&innersrc=uriapi"
+            location.href = "https://uri.amap.com/marker?position=" + j + "," + w + "&name=" + name
+        }
+    }
+
+    function toJW(id) {
         location.href = "https://kcgl.eszedu.com/h5/dwjw2024?id=" + id
     }
+
     //弹框显示学校名称、地点、图片信息等
     function show(i, j) {
-        var name , address , bsc , coord ,id, picturelist
-        var picture="<div style='padding:5px 0 0 10px' id='xxtp'>学校图片（学校账号可上传）：</div>"
+        var name, address, bsc, coord, id, picturelist
+        var picture = "<div style='padding:5px 0 0 10px' id='xxtp'>单位展示照：</div>"
         if (j == 1) {
             name = schoollistnow[i].name
             address = schoollistnow[i].address
             bsc = schoollistnow[i].bsc
             coord = schoollistnow[i].coord
-            picturelist=schoollistnow[i].picture
-            id=schoollistnow[i].id
+            picturelist = schoollistnow[i].picture
+            id = schoollistnow[i].id
         } else {
             name = schoollistAll[i].name
             address = schoollistAll[i].address
             bsc = schoollistAll[i].bsc
             coord = schoollistAll[i].coord
-            picturelist=schoollistAll[i].picture
-            id=schoollistAll[i].id
+            picturelist = schoollistAll[i].picture
+            id = schoollistAll[i].id
         }
-        var pictures=[0,0]
-        if( picturelist!=null){
-            pictures=picturelist.split(",")
-            if(schoolMes!=null) {
+        toSchGis(name, 2)
+        var pictures = [0, 0]
+        if (picturelist != null) {
+            pictures = picturelist.split(",")
+            if (schoolMes != null) {
                 if (schoolMes.realName != name) {
-                    for(var p=0;p<pictures.length;p++){
-                        if(pictures[p]!=0){
-                            picture=picture  + "<div><img style='width: 200px;height: 100px;padding: 5px' src='"+pictures[p]+"'></div>"
+                    for (var p = 0; p < pictures.length; p++) {
+                        if (pictures[p] != 0) {
+                            picture = picture + "<div><img style='width: 200px;height: 100px;padding: 5px' src='" + pictures[p] + "'></div>"
                         }
                     }
                 }
             }
         }
 
-        var coordchange=""
-        if(schoolMes!=null){
-            if(schoolMes.realName==name){
-                coordchange="<button onclick='toJW(\""+id+"\")'" +
+        var coordchange = ""
+        if (schoolMes != null) {
+            if (schoolMes.realName == name) {
+                coordchange = "<button onclick='toJW(\"" + id + "\")'" +
                     "style='background-color: #00B4AA;color: white;border:none;border-radius: 5px'>更新</button>"
             }
         }
@@ -545,18 +584,18 @@
             type: 1,
             closeBtn: 0,
             area: ['325px', '485px'],
-            content: "<div style='padding:5px 0 0 10px'> <div>单位名称：" + name + "</div>"
+            content: "<div style='padding:5px 0 0 10px;'> <div>单位名称：" + name + "</div>"
                 + "<div>单位地点：" + address + "</div>"
                 + "<div>所属乡镇：" + bsc + "</div>"
-                + "<div>经纬度：" +coord + coordchange+"</div>"
+                + "<div>经纬度：" + coord + coordchange + "</div>"
                 + "<div>导航：<button onclick='toDh(" + coord + ",\"" + name + "\")' " +
                 "style='background-color: #00B4AA;color: white;border:none;border-radius: 5px'>进入导航</button></div></div>"
-                +picture,
-            success: function(){
-                if(schoolMes!=null) {
+                + picture,
+            success: function () {
+                if (schoolMes != null) {
                     if (schoolMes.realName == name) {
                         //if(picturelist==null){
-                            settp(id,"xxtp","学校图片",pictures[0],pictures[1])
+                        settp(id, "xxtp", "单位展示照", pictures[0], pictures[1])
                         //}
                     }
                 }
@@ -567,7 +606,6 @@
             }
         });
     }
-
 
 
     var schoollistpageNum = 20
@@ -773,6 +811,23 @@
         return bh
     }
 
+    function showJyj(s) {
+        var name = jyjList[s].name
+        var address = jyjList[s].address
+        layer.open({
+            skin: 'demo-class',
+            type: 1,
+            closeBtn: 0,
+            area: ['350px', '200px'],
+            content: "<div style='padding:5px 0 0 10px'> <div>单位名称：" + name + "</div>"
+                + "<div>单位地点：" + address + "</div>"
+                + "</div>",
+            btn: ['关闭'],
+            btn1: function (index) {
+                layer.close(index)
+            }
+        });
+    }
 
     function getDitu(json, jyjname, xiangzhenName, schoolname, schoolType, jbh) {
         getditus[0] = json
@@ -784,7 +839,7 @@
         document.getElementById("jbh").onclick = function (ev) {
             setjbh(0)
         }
-        document.getElementById("jbh").innerHTML = "仅名称"
+        document.getElementById("jbh").innerHTML = "名称"
 
         if (schoolType == null) {
             schoolTypeNUll()
@@ -804,16 +859,23 @@
         document.getElementById("btns").style.height = '50px'
 
         var ss
-        $.ajax({
-            async: false,
-            url: "/js/json/package.json?v=20240219",//同文件夹下的json文件路径
-            type: "GET",//请求方式为get
-            dataType: "json", //返回数据格式为json
-            success: function (data) {//请求成功完成后要执行的方法
-                //console.log(data);
-                ss = data
-            }
-        })
+        if (jyjList != null) {
+            ss = jyjList
+        } else {
+            $.ajax({
+                async: false,
+                url: "/js/json/package.json?v=20240227",//同文件夹下的json文件路径
+                type: "GET",//请求方式为get
+                dataType: "json", //返回数据格式为json
+                success: function (data) {//请求成功完成后要执行的方法
+                    //console.log(data);
+                    ss = data
+                    jyjList = data
+                }
+            })
+        }
+
+
         var school
         if (schoollistAll != null) {
             school = schoollistAll
@@ -829,8 +891,8 @@
                     var sch = new Array()
                     for (var i = 0; i < data.length; i++) {
                         // if (data[i].schooltype != "幼儿园") {// 隐藏幼儿园
-                        var coord=data[i].coord.split(",")
-                        data[i].coord=[parseFloat(coord[0]),parseFloat(coord[1])]
+                        var coord = data[i].coord.split(",")
+                        data[i].coord = [parseFloat(coord[0]), parseFloat(coord[1])]
                         sch.push(data[i])
                         //}
                     }
@@ -989,44 +1051,22 @@
                         symbolSize: 30,
                         data: ss
                     };
-                    document.getElementById("schoollist").innerHTML = "\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button>恩施市教育局</button>\n" +
-                        "            </div>\n" +
-                        "            <div>\n" +
-                        "                <button>利川市教育局</button>\n" +
-                        "            </div>\n" +
-                        "        </div>\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button>建始县教育局</button>\n" +
-                        "            </div>\n" +
-                        "            <div>\n" +
-                        "                <button>巴东县教育局</button>\n" +
-                        "            </div>\n" +
-                        "        </div>\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button>宣恩县教育局</button>\n" +
-                        "            </div>\n" +
-                        "            <div>\n" +
-                        "                <button>咸丰县教育局</button>\n" +
-                        "            </div>\n" +
-                        "        </div>\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button>来凤县教育局</button>\n" +
-                        "            </div>\n" +
-                        "            <div>\n" +
-                        "                <button>鹤峰县教育局</button>\n" +
-                        "            </div>\n" +
-                        "        </div>\n" +
-                        "        <div class=\"title05 tutlebutton\">\n" +
-                        "            <div>\n" +
-                        "                <button style=\"padding: 5px 16px;\">恩施州高级中学</button>\n" +
-                        "            </div>\n" +
-                        "        </div>"
+                    var schoollistinner = ""
+                    for (var s = 0; s < jyjList.length; s = s + 1) {
+                        if (jyjList[s].name != "恩施州教育局") {
+                            schoollistinner = schoollistinner + "<div class=\"title05 tutlebutton\">\n" +
+                                "            <div>" +
+                                "                <button onclick='showJyj(" + s + ")'>" + jyjList[s].name + "</button>" +
+                                "            </div>" +
+                                "            <div>" +
+                                "                <button  onclick='showJyj(" + (s + 1) + ")'>" + jyjList[s + 1].name + "</button>" +
+                                "            </div>" +
+                                "        </div>"
+                            s = s + 1
+                        }
+                    }
+                    document.getElementById("schoollist").innerHTML = schoollistinner
+                    document.getElementById("jyjnow").innerHTML = " <button style=\"height: 35px;width: auto\" onclick='showJyj(0)'>恩施州教育局</button>"
                     schooltjlist(0, school)
 
 
@@ -1154,6 +1194,12 @@
                 } else {
                     zz = 1
                     if (jyjname != null) {
+                        for (var s = 0; s < jyjList.length; s++) {
+                            if (jyjList[s].name == jyjname + "教育局") {
+                                document.getElementById("jyjnow").innerHTML =
+                                    " <button style=\"height: 35px;width: auto\" onclick='showJyj(" + s + ")'>" + jyjname + "教育局</button>"
+                            }
+                        }
                         if (xiangzhenName != null) {
                             var xzmarkPoint = new Array()
                             var xp = 1;
@@ -1187,71 +1233,77 @@
                                     delete school[p].symbolSize
                                     delete school[p].label
                                     delete school[p].itemStyle
-                                    school[p].zlevel=1
-                                    if (school[p].value == schoolname || school[p].name == schoolname) {
-                                        school[p].symbolSize = 70
-                                        school[p].zlevel=2
-                                        if(jbh!=null) {
-                                            school[p].label = {
-                                                fontSize: 20, color: "white", formatter: function (params) {
-                                                    return '{a|' + params.name + '}'; // 返回第三列值作为标记点的文本内容
-                                                },
-                                                rich: {
-                                                    a: {
-                                                        fontWeight: 'bold',
-                                                        textBorderColor: 'blue', // 设置描边颜色为白色
-                                                        textBorderWidth: 3, // 设置描边线宽度
-                                                        shadowBlur: 8, // 设置阴影模糊程度
-                                                        shadowOffsetX: 2, // 设置水平阴影位移量
-                                                        shadowOffsetY: 2, // 设置垂直阴影位移量
-                                                        shadowColor: 'rgba(0, 0, 0, 0.4)' // 设置阴影颜色及透明度
-                                                    }
-                                                }
-                                            }
-                                        }else {
-                                            school[p].label = {
-                                                fontSize: 20, color: "white", formatter: function (params) {
-                                                    return '{a|' + params.value + '}'; // 返回第三列值作为标记点的文本内容
-                                                },
-                                                rich: {
-                                                    a: {
-                                                        fontWeight: 'bold',
-                                                        textBorderColor: 'blue', // 设置描边颜色为白色
-                                                        textBorderWidth: 3, // 设置描边线宽度
-                                                        shadowBlur: 8, // 设置阴影模糊程度
-                                                        shadowOffsetX: 2, // 设置水平阴影位移量
-                                                        shadowOffsetY: 2, // 设置垂直阴影位移量
-                                                        shadowColor: 'rgba(0, 0, 0, 0.4)' // 设置阴影颜色及透明度
-                                                    }
-                                                }
-                                            }
+                                    school[p].zlevel = 1
+                                    // if (school[p].value == schoolname || school[p].name == schoolname) {
+                                    //     school[p].symbolSize = 70
+                                    //     school[p].zlevel=2
+                                    //     if(jbh!=null) {
+                                    //         school[p].label = {
+                                    //             fontSize: 20, color: "white", formatter: function (params) {
+                                    //                 return '{a|' + params.name + '}'; // 返回第三列值作为标记点的文本内容
+                                    //             },
+                                    //             rich: {
+                                    //                 a: {
+                                    //                     fontWeight: 'bold',
+                                    //                     textBorderColor: 'blue', // 设置描边颜色为白色
+                                    //                     textBorderWidth: 3, // 设置描边线宽度
+                                    //                     shadowBlur: 8, // 设置阴影模糊程度
+                                    //                     shadowOffsetX: 2, // 设置水平阴影位移量
+                                    //                     shadowOffsetY: 2, // 设置垂直阴影位移量
+                                    //                     shadowColor: 'rgba(0, 0, 0, 0.4)' // 设置阴影颜色及透明度
+                                    //                 }
+                                    //             }
+                                    //         }
+                                    //     }else {
+                                    //         school[p].label = {
+                                    //             fontSize: 20, color: "white", formatter: function (params) {
+                                    //                 return '{a|' + params.value + '}'; // 返回第三列值作为标记点的文本内容
+                                    //             },
+                                    //             rich: {
+                                    //                 a: {
+                                    //                     fontWeight: 'bold',
+                                    //                     textBorderColor: 'blue', // 设置描边颜色为白色
+                                    //                     textBorderWidth: 3, // 设置描边线宽度
+                                    //                     shadowBlur: 8, // 设置阴影模糊程度
+                                    //                     shadowOffsetX: 2, // 设置水平阴影位移量
+                                    //                     shadowOffsetY: 2, // 设置垂直阴影位移量
+                                    //                     shadowColor: 'rgba(0, 0, 0, 0.4)' // 设置阴影颜色及透明度
+                                    //                 }
+                                    //             }
+                                    //         }
+                                    //     }
+                                    //
+                                    //     school[p].itemStyle = {color: "yellow"}
+                                    //     //
+                                    //     //     if (xp < 10) {
+                                    //     //         school[p].value = bh + "00" + xp
+                                    //     //     } else if (xp < 100) {
+                                    //     //         school[p].value = bh + "0" + xp
+                                    //     //     } else if (xp < 1000) {
+                                    //     //         school[p].value = bh + xp
+                                    //     //     }
+                                    // }
+                                    if (schoolname != "" && schoolname != null) {
+                                        if (school[p].value == schoolname || school[p].name == schoolname) {
+                                            xzmarkPoint.push(school[p])
                                         }
-
-                                        school[p].itemStyle = {color: "yellow"}
-                                        //
-                                        //     if (xp < 10) {
-                                        //         school[p].value = bh + "00" + xp
-                                        //     } else if (xp < 100) {
-                                        //         school[p].value = bh + "0" + xp
-                                        //     } else if (xp < 1000) {
-                                        //         school[p].value = bh + xp
-                                        //     }
-                                    }
-
-                                    if (schoolType != null && schoolType != "") {
-                                        for (var s = 0; s < schoolType.length; s++) {
-                                            if (school[p].schooltype == schoolType[s]) {
-                                                xzmarkPoint.push(school[p])
-                                            }
-                                        }
-
-                                        // if(school[p].schooltype==schoolType){
-                                        //     xzmarkPoint.push(school[p])
-                                        // }
                                     } else {
-                                        xzmarkPoint.push(school[p])
-                                    }
 
+
+                                        if (schoolType != null && schoolType != "") {
+                                            for (var s = 0; s < schoolType.length; s++) {
+                                                if (school[p].schooltype == schoolType[s]) {
+                                                    xzmarkPoint.push(school[p])
+                                                }
+                                            }
+
+                                            // if(school[p].schooltype==schoolType){
+                                            //     xzmarkPoint.push(school[p])
+                                            // }
+                                        } else {
+                                            xzmarkPoint.push(school[p])
+                                        }
+                                    }
 
                                     xp++
                                 }
@@ -1263,6 +1315,7 @@
                                     },
                                     rich: {
                                         a: {
+                                            fontSize: 3,
                                             fontWeight: 'bold',
                                             textBorderColor: '#F41141', // 设置描边颜色为白色
                                             textBorderWidth: 3, // 设置描边线宽度
@@ -1272,8 +1325,8 @@
                                             shadowColor: 'rgba(0, 0, 0, 0.4)' // 设置阴影颜色及透明度
                                         }
                                     }
-                                    ,fontSize:5
-                                },symbolSize:30, itemStyle: {color: "red"}, data: xzmarkPoint
+                                    , fontSize: 3
+                                }, symbolSize: 10, itemStyle: {color: "red"}, data: xzmarkPoint
                             }
                             if (jbh != null) {
                                 option.series[0].markPoint = {
@@ -1283,6 +1336,7 @@
                                         },
                                         rich: {
                                             a: {
+                                                fontSize: 3,
                                                 fontWeight: 'bold',
                                                 textBorderColor: '#F41141', // 设置描边颜色为白色
                                                 textBorderWidth: 3, // 设置描边线宽度
@@ -1291,14 +1345,13 @@
                                                 shadowOffsetY: 2, // 设置垂直阴影位移量
                                                 shadowColor: 'rgba(0, 0, 0, 0.4)' // 设置阴影颜色及透明度
                                             }
-                                        } ,fontSize:5
-                                    }, symbolSize:30,itemStyle: {color: "red"}, data: xzmarkPoint
+                                        }, fontSize: 3
+                                    }, symbolSize: 10, itemStyle: {color: "red"}, data: xzmarkPoint
                                 }
                             }
 
 
-                        } else
-                            {
+                        } else {
                             var xzmarkPoint = new Array()
                             var xp = 1;
                             var bh = ""//getBh(jyjname)
@@ -1556,16 +1609,16 @@
                             option.series[0].label.show = false;
                         }
 
-                        if (xiangzhenName == null) {
-                            if(cengshu<5){
-                                option.series[0].markPoint.label.rich.a.fontSize = cengshu + 1
-                            }else {
-                                option.series[0].markPoint.label.rich.a.fontSize = 6
-                            }
+                        //if (xiangzhenName == null) {
+                        // if (cengshu < 5) {
+                        option.series[0].markPoint.label.rich.a.fontSize = cengshu + 1
+                        //} else {
+                        //  option.series[0].markPoint.label.rich.a.fontSize = 6
+                        //}
 
-                            option.series[0].markPoint.symbolSize = cengshu + 10
-                            option.series[0].label.fontSize = fontSize;
-                        }
+                        option.series[0].markPoint.symbolSize = cengshu + 12
+                        option.series[0].label.fontSize = fontSize;
+                        //}
 
                         chart.clear()
                         chart.setOption(option);
