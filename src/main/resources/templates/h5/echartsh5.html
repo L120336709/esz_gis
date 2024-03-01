@@ -375,13 +375,15 @@
         <!--        </div>-->
     </div>
 </div>
-
+<!--<div onclick="towx()">跳转小程序测试</div>-->
 <div th:text="${h5}" id="h5" hidden></div>
 <script src="/js/mmlib.min.js"></script>
 <script src="/js/common.js"></script>
 <script src="/js/json/new/echarts-all.min.js?v=20240221"></script>
 <script src="/js/json/gis.js?v=202402224"></script>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="text/javascript"></script>
 <script type="text/javascript">
+
     var jyjList = null
     var schoollistAll = null
     var schoollistnow = new Array()
@@ -391,6 +393,14 @@
     var cengshu = 2
     var getditus = [null, null, null, null, null]
     var zz = 0
+
+    function towx() {
+        wx.miniProgram.navigateTo({
+            //appId:'wx298b3cf8394759c2',
+            url: '/pages/navigation/index?latitude=${latitude}&longitude=${longitude}&name=${name}&address=${address}'
+        })
+    }
+
 
     function changes(num) {
         document.getElementById("id2").hidden = true
@@ -519,14 +529,22 @@
     }
 
 
+    function lxgh(j, w) {
+        location.href = "https://kcgl.eszedu.com/h5/phone2023?position=" + j + "," + w
+    }
 
+    function toDh(j, w, name, address) {
 
-
-    function toDh(j, w, name) {
         var h5 = document.getElementById("h5").innerText
         if (h5 != "") {
-            name = encodeURIComponent(name);
-            touch("https://m.amap.com/share/index/lnglat=" + j + "," + w + "&name=" + name + "&src=uriapi&innersrc=uriapi")
+            wx.miniProgram.navigateTo({
+                //appId:'wx298b3cf8394759c2',
+               url: '/pages/navigation/index?latitude='+w+'&longitude='+j+'&name='+name+'&address='+address
+                // url: '/pages/changepassword/changepassword'
+            })
+            //name = encodeURIComponent(name);
+            //touch("https://m.amap.com/share/index/lnglat=" + j + "," + w + "&name=" + name + "&src=uriapi&innersrc=uriapi")
+
         } else {
             //location.href =  "https://m.amap.com/share/index/lnglat="+j+ "," + w+"&name="+name+"&src=uriapi&innersrc=uriapi"
             location.href = "https://uri.amap.com/marker?position=" + j + "," + w + "&name=" + name
@@ -588,8 +606,11 @@
                 + "<div>单位地点：" + address + "</div>"
                 + "<div>所属乡镇：" + bsc + "</div>"
                 + "<div>经纬度：" + coord + coordchange + "</div>"
-                + "<div>导航：<button onclick='toDh(" + coord + ",\"" + name + "\")' " +
-                "style='background-color: #00B4AA;color: white;border:none;border-radius: 5px'>进入导航</button></div></div>"
+                + "<div>导航：<button onclick='toDh(" + coord + ",\"" + name + "\",\"" + address + "\")' " +
+                "style='background-color: #00B4AA;color: white;border:none;border-radius: 5px'>进入导航</button>" +
+                // "<button onclick='lxgh(" + coord + ",\"" + name + "\")' " +
+                // "style='background-color: #00B4AA;color: white;border:none;border-radius: 5px'>路线规划</button>" +
+                "</div></div>"
                 + picture,
             success: function () {
                 if (schoolMes != null) {
